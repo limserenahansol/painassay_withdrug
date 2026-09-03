@@ -1,0 +1,35 @@
+# Raw session videos: ~5.8 GB each, ~128 GB total. These stay on the
+# acquisition machine. Everything in the repository is derived from them and
+# the pipeline is reproducible from the scored .mat files in data/.
+*.avi
+*.mov
+*.mkv
+
+# Superseded decks. Only the current full deck is kept in slides/.
+*_labmeeting_v*.pptx
+*_labmeeting_2*.pptx
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# MATLAB
+*.asv
+*.m~
+slprj/
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.vscode/
+.idea/
+
+# Scratch
+scratch/
+tmp/
+*.tmp

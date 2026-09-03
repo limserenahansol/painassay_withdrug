@@ -1,0 +1,9 @@
+file,behaviour,code,raw_events,merged_events,gaps_filled,raw_frames,merged_frames,plateau,counts_trustworthy,n_at_0s,n_at_0.13s,n_at_0.2s,n_at_0.35s,n_at_0.5s,n_at_1s
+female1bottom000126_09_0212_00_19,attending,1,14,10,4,78,95,1,yes,14,11,10,10,10,10
+female1bottom000126_09_0212_00_19,lickbite,2,49,20,29,169,281,0,approximate,49,25,22,20,19,18
+female1bottom000126_09_0212_00_19,guarding,3,2,2,0,17,17,1,yes,2,2,2,2,2,2
+female1bottom000126_09_0212_00_19,escape,4,104,86,18,2074,2158,0,approximate,104,94,89,86,82,77
+female2bottom000226_09_0212_33_04_009,attending,1,33,19,14,120,151,1,yes,33,19,19,19,19,19
+female2bottom000226_09_0212_33_04_009,lickbite,2,79,51,28,373,478,0,approximate,79,59,55,51,50,44
+female2bottom000226_09_0212_33_04_009,guarding,3,30,24,6,286,321,0,approximate,30,28,27,24,24,22
+female2bottom000226_09_0212_33_04_009,escape,4,100,70,30,1600,1699,0,approximate,100,77,72,70,68,56

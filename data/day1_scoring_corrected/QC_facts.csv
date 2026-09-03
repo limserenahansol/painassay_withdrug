@@ -1,0 +1,7 @@
+file,mouse,session,dur_s,n_del,runs_after_fix,n_miskey_fixed,n_unknown,labelled_frames,stimuli,attending_events,attending_before_merge,lickbite_events,lickbite_before_merge,guarding_events,guarding_before_merge,escape_events,escape_before_merge
+female1bottom000126_09_0212_00_19,F1,1,1680.9,87,4,0,0,2594,Mild touch:26 | Pin prick:16 | Light touch:22 | Heat:23,10,14,20,49,2,2,86,104
+female2bottom000226_09_0212_33_04_009,F2,2,1680.3,88,4,9,0,2856,Heat:20 | Mild touch:20 | Pin prick:31 | Light touch:17,19,33,51,79,24,30,70,100
+female3bottom000326_09_0213_03_46_008,F3,3,1691.9,85,4,0,0,4117,Heat:15 | Light touch:30 | Pin prick:21 | Mild touch:19,15,24,56,98,25,34,101,135
+male1bottom000626_09_0214_37_16_006,M1,4,1692.4,100,4,0,0,5900,Mild touch:26 | Light touch:28 | Heat:22 | Pin prick:24,32,35,21,26,29,32,69,69
+male2bottom000526_09_0214_06_31_004,M2,5,1692.1,83,4,3,0,6572,Pin prick:23 | Mild touch:21 | Heat:16 | Light touch:23,37,40,19,19,21,26,105,114
+male3bottom000426_09_0213_35_27_011,M3,6,1722.3,91,4,6,0,4953,Pin prick:22 | Mild touch:24 | Light touch:25 | Heat:20,43,44,21,24,24,29,57,58
