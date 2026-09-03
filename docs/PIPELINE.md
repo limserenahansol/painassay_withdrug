@@ -461,6 +461,58 @@ cells by rate, only 4 by hit rate.
 
 ---
 
+## How long is a stimulus block? Two definitions, both computed
+
+Behaviour does not stop when the stimulus does, so the 1 min rest that follows
+each block was tested both ways:
+
+| `--block-s` | Window | Meaning |
+|---|---|---|
+| 300 | first delivery + 5 min | the stimulus period proper |
+| 360 | first delivery + 6 min | the stimulus period **plus** the rest that follows it |
+
+Attributing the rest minute to the block before it is the defensible reading —
+nothing else caused it, and the next block has not started. Windows are clipped
+so they never reach the next block's first delivery.
+
+**What is and is not comparable between the two:**
+
+| Measure | Comparable? | Why |
+|---|---|---|
+| `n_per_delivery` | **yes** | the rest minute contains no deliveries, so the denominator is identical and any rise is real extra behaviour |
+| `n_bouts` | yes, within a version | the difference between versions *is* the rest-minute contribution |
+| `rate_per_min` | **no** | the divisor changes 5 → 6 min, so it falls ~17 % mechanically |
+
+### Result on Day 1: the rest minute adds almost nothing
+
+| Behaviour | 5 min | 6 min | change | extra events per block |
+|---|---|---|---|---|
+| Paw withdrawal | 1.133 | 1.135 | +0.1 % | 0.04 |
+| Flinch | 0.830 | 0.830 | +0.0 % | 0.00 |
+| Paw attending | 0.306 | 0.308 | +0.6 % | 0.04 |
+| Licking / biting | 0.377 | 0.386 | +2.2 % | 0.12 |
+| Guarding | 0.238 | 0.241 | +1.1 % | 0.08 |
+| **Escape / rearing** | 0.710 | 0.746 | **+5.0 %** | 0.79 |
+
+Pain behaviours are flat. Escape/rearing rises in **every** mouse — consistent
+with rearing being exploration that resumes once the stimulus stops, which is
+the same conclusion the baseline-versus-block comparison reached independently.
+
+**Why so little?** Because the 5 min window *already* contains the quiet tail.
+The window starts at the block's first delivery, but the experimenter finishes
+delivering before the 300 s mark: the first-to-last delivery span is 139–299 s,
+median 256 s. So the 5 min version already includes a mean of **45 s** of
+post-stimulus time, and the extra minute lands further out where behaviour has
+already subsided.
+
+This is a Day 1 result. If ongoing behaviour appears during rest on the drug
+day, the 6 min version is where it will show — which is why both are kept.
+
+Scripts: `step1_block_measures.py --block-s 300|360`, then
+`compare_block_windows.py` for `W1`/`W2` and the statistics.
+
+---
+
 ## Statistics at two levels
 
 With six animals the population test has a **hard arithmetic floor**. The
