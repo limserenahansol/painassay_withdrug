@@ -8,7 +8,7 @@ female1bottom000126_09_0212_00_19,F1,metadata filled,mouseID,(empty),F1
 female1bottom000126_09_0212_00_19,F1,metadata filled,sexID,(empty),F
 female1bottom000126_09_0212_00_19,F1,metadata filled,dayNo,(empty),1
 female1bottom000126_09_0212_00_19,F1,metadata filled,phase,Baseline,Baseline (no injection)
-female1bottom000126_09_0212_00_19,F1,metadata filled,treatment,(empty),None
+female1bottom000126_09_0212_00_19,F1,metadata filled,treatment,(empty),Vehicle
 female1bottom000126_09_0212_00_19,F1,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0
 female2bottom000226_09_0212_33_04_009,F2,stimulus mis-key (clock window),t=303.9s is in block 1 (300-600s),Mild touch,Heat
 female2bottom000226_09_0212_33_04_009,F2,stimulus mis-key (clock window),t=385.5s is in block 1 (300-600s),Mild touch,Heat
@@ -29,7 +29,7 @@ female2bottom000226_09_0212_33_04_009,F2,metadata filled,mouseID,(empty),F2
 female2bottom000226_09_0212_33_04_009,F2,metadata filled,sexID,(empty),F
 female2bottom000226_09_0212_33_04_009,F2,metadata filled,dayNo,(empty),1
 female2bottom000226_09_0212_33_04_009,F2,metadata filled,phase,Baseline,Baseline (no injection)
-female2bottom000226_09_0212_33_04_009,F2,metadata filled,treatment,(empty),None
+female2bottom000226_09_0212_33_04_009,F2,metadata filled,treatment,(empty),Vehicle
 female2bottom000226_09_0212_33_04_009,F2,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0
 female3bottom000326_09_0213_03_46_008,F3,stimulus name from sheet,slot 2 (block 2 of the session),Mild touch,Light touch
 female3bottom000326_09_0213_03_46_008,F3,fast clicks merged,attending: 9 gap(s) <= 0.35s filled,24,15
@@ -42,7 +42,7 @@ female3bottom000326_09_0213_03_46_008,F3,metadata filled,mouseID,(empty),F3
 female3bottom000326_09_0213_03_46_008,F3,metadata filled,sexID,(empty),F
 female3bottom000326_09_0213_03_46_008,F3,metadata filled,dayNo,(empty),1
 female3bottom000326_09_0213_03_46_008,F3,metadata filled,phase,Baseline,Baseline (no injection)
-female3bottom000326_09_0213_03_46_008,F3,metadata filled,treatment,(empty),None
+female3bottom000326_09_0213_03_46_008,F3,metadata filled,treatment,(empty),Vehicle
 female3bottom000326_09_0213_03_46_008,F3,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0
 male1bottom000626_09_0214_37_16_006,M1,stimulus name spelling only,slot 1,mild touch,Mild touch
 male1bottom000626_09_0214_37_16_006,M1,stimulus name spelling only,slot 2,light,Light touch
@@ -55,7 +55,7 @@ male1bottom000626_09_0214_37_16_006,M1,metadata filled,mouseID,(empty),M1
 male1bottom000626_09_0214_37_16_006,M1,metadata filled,sexID,(empty),M
 male1bottom000626_09_0214_37_16_006,M1,metadata filled,dayNo,(empty),1
 male1bottom000626_09_0214_37_16_006,M1,metadata filled,phase,Baseline,Baseline (no injection)
-male1bottom000626_09_0214_37_16_006,M1,metadata filled,treatment,(empty),None
+male1bottom000626_09_0214_37_16_006,M1,metadata filled,treatment,(empty),Vehicle
 male1bottom000626_09_0214_37_16_006,M1,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0
 male2bottom000526_09_0214_06_31_004,M2,stimulus mis-key (clock window),t=1277.0s is in block 3 (1020-1320s),Light touch,Heat
 male2bottom000526_09_0214_06_31_004,M2,stimulus mis-key (clock window),t=1278.2s is in block 3 (1020-1320s),Light touch,Heat
@@ -69,7 +69,7 @@ male2bottom000526_09_0214_06_31_004,M2,metadata filled,mouseID,(empty),M2
 male2bottom000526_09_0214_06_31_004,M2,metadata filled,sexID,(empty),M
 male2bottom000526_09_0214_06_31_004,M2,metadata filled,dayNo,(empty),1
 male2bottom000526_09_0214_06_31_004,M2,metadata filled,phase,Baseline,Baseline (no injection)
-male2bottom000526_09_0214_06_31_004,M2,metadata filled,treatment,(empty),None
+male2bottom000526_09_0214_06_31_004,M2,metadata filled,treatment,(empty),Vehicle
 male2bottom000526_09_0214_06_31_004,M2,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0
 male3bottom000426_09_0213_35_27_011,M3,stimulus name spelling only,slot 1,pin prick,Pin prick
 male3bottom000426_09_0213_35_27_011,M3,stimulus name spelling only,slot 3,light,Light touch
@@ -90,5 +90,5 @@ male3bottom000426_09_0213_35_27_011,M3,metadata filled,mouseID,(empty),M3
 male3bottom000426_09_0213_35_27_011,M3,metadata filled,sexID,(empty),M
 male3bottom000426_09_0213_35_27_011,M3,metadata filled,dayNo,(empty),1
 male3bottom000426_09_0213_35_27_011,M3,metadata filled,phase,Baseline,Baseline (no injection)
-male3bottom000426_09_0213_35_27_011,M3,metadata filled,treatment,(empty),None
+male3bottom000426_09_0213_35_27_011,M3,metadata filled,treatment,(empty),Vehicle
 male3bottom000426_09_0213_35_27_011,M3,guardMin,tap scoring: a duration filter would discard nearly every mark,2.0,0.0

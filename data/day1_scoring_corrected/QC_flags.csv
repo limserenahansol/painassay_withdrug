@@ -1,3 +1,9 @@
 file,mouse,kind,detail,action
+female1bottom000126_09_0212_00_19,F1,treatment differs from the sheet,"sheet says 'None' for session 1, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'
+female2bottom000226_09_0212_33_04_009,F2,treatment differs from the sheet,"sheet says 'None' for session 2, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'
+female3bottom000326_09_0213_03_46_008,F3,treatment differs from the sheet,"sheet says 'None' for session 3, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'
 male1bottom000626_09_0214_37_16_006,M1,"names kept as TYPED, sheet differs","typed ['Mild touch', 'Light touch', 'Heat', 'Pin prick'] vs sheet ['Pin prick', 'Mild touch', 'Light touch', 'Heat'] - kept the typed names on your instruction",no change - this is the chosen source
+male1bottom000626_09_0214_37_16_006,M1,treatment differs from the sheet,"sheet says 'None' for session 4, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'
+male2bottom000526_09_0214_06_31_004,M2,treatment differs from the sheet,"sheet says 'None' for session 5, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'
 male3bottom000426_09_0213_35_27_011,M3,"names kept as TYPED, sheet differs","typed ['Pin prick', 'Mild touch', 'Light touch', 'Heat'] vs sheet ['Mild touch', 'Light touch', 'Heat', 'Pin prick'] - kept the typed names on your instruction",no change - this is the chosen source
+male3bottom000426_09_0213_35_27_011,M3,treatment differs from the sheet,"sheet says 'None' for session 6, recorded as 'Vehicle' on your instruction that every mouse received it",wrote 'Vehicle'

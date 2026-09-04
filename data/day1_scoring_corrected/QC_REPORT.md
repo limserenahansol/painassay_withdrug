@@ -1,11 +1,11 @@
 # QC and correction report - Day 1 (no drug)
 
-- originals: `C:\Users\hsollim\Documents\HEAL_mini1p_SBI553\videos\output` **unmodified**
-- corrected: `C:\Users\hsollim\Documents\HEAL_mini1p_SBI553\videos\output_corrected`
+- originals: `..\videos\output` **unmodified**
+- corrected: `..\videos\output_corrected`
 - merge gap 0.35 s; blocks assigned by clock window 5-10 / 11-16 / 17-22 / 23-28 min
 - guarding events given a nominal 1 s each (a tap records the keypress, not the behaviour); event counts unchanged
 - stimulus names: F1=sheet, F2=sheet, F3=sheet, M1=typed, M2=sheet, M3=typed
-- 6 session(s), 93 change(s), 2 flag(s)
+- 6 session(s), 93 change(s), 8 flag(s)
 
 Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomisation sheet, because the delivery order on the day did not follow the sheet. Only the spelling was normalised.
 
@@ -35,8 +35,14 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 
 | file | mouse | kind | detail | action |
 |---|---|---|---|---|
+| female1bottom000126_09_0212_00_19 | F1 | treatment differs from the sheet | sheet says 'None' for session 1, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
+| female2bottom000226_09_0212_33_04_009 | F2 | treatment differs from the sheet | sheet says 'None' for session 2, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
+| female3bottom000326_09_0213_03_46_008 | F3 | treatment differs from the sheet | sheet says 'None' for session 3, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
 | male1bottom000626_09_0214_37_16_006 | M1 | names kept as TYPED, sheet differs | typed ['Mild touch', 'Light touch', 'Heat', 'Pin prick'] vs sheet ['Pin prick', 'Mild touch', 'Light touch', 'Heat'] - kept the typed names on your instruction | no change - this is the chosen source |
+| male1bottom000626_09_0214_37_16_006 | M1 | treatment differs from the sheet | sheet says 'None' for session 4, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
+| male2bottom000526_09_0214_06_31_004 | M2 | treatment differs from the sheet | sheet says 'None' for session 5, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
 | male3bottom000426_09_0213_35_27_011 | M3 | names kept as TYPED, sheet differs | typed ['Pin prick', 'Mild touch', 'Light touch', 'Heat'] vs sheet ['Mild touch', 'Light touch', 'Heat', 'Pin prick'] - kept the typed names on your instruction | no change - this is the chosen source |
+| male3bottom000426_09_0213_35_27_011 | M3 | treatment differs from the sheet | sheet says 'None' for session 6, recorded as 'Vehicle' on your instruction that every mouse received it | wrote 'Vehicle' |
 
 ## Every change made
 
@@ -51,7 +57,7 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | female1bottom000126_09_0212_00_19 | F1 | metadata filled | sexID | (empty) | F |
 | female1bottom000126_09_0212_00_19 | F1 | metadata filled | dayNo | (empty) | 1 |
 | female1bottom000126_09_0212_00_19 | F1 | metadata filled | phase | Baseline | Baseline (no injection) |
-| female1bottom000126_09_0212_00_19 | F1 | metadata filled | treatment | (empty) | None |
+| female1bottom000126_09_0212_00_19 | F1 | metadata filled | treatment | (empty) | Vehicle |
 | female1bottom000126_09_0212_00_19 | F1 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
 | female2bottom000226_09_0212_33_04_009 | F2 | stimulus mis-key (clock window) | t=303.9s is in block 1 (300-600s) | Mild touch | Heat |
 | female2bottom000226_09_0212_33_04_009 | F2 | stimulus mis-key (clock window) | t=385.5s is in block 1 (300-600s) | Mild touch | Heat |
@@ -72,7 +78,7 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | female2bottom000226_09_0212_33_04_009 | F2 | metadata filled | sexID | (empty) | F |
 | female2bottom000226_09_0212_33_04_009 | F2 | metadata filled | dayNo | (empty) | 1 |
 | female2bottom000226_09_0212_33_04_009 | F2 | metadata filled | phase | Baseline | Baseline (no injection) |
-| female2bottom000226_09_0212_33_04_009 | F2 | metadata filled | treatment | (empty) | None |
+| female2bottom000226_09_0212_33_04_009 | F2 | metadata filled | treatment | (empty) | Vehicle |
 | female2bottom000226_09_0212_33_04_009 | F2 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
 | female3bottom000326_09_0213_03_46_008 | F3 | stimulus name from sheet | slot 2 (block 2 of the session) | Mild touch | Light touch |
 | female3bottom000326_09_0213_03_46_008 | F3 | fast clicks merged | attending: 9 gap(s) <= 0.35s filled | 24 | 15 |
@@ -85,7 +91,7 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | female3bottom000326_09_0213_03_46_008 | F3 | metadata filled | sexID | (empty) | F |
 | female3bottom000326_09_0213_03_46_008 | F3 | metadata filled | dayNo | (empty) | 1 |
 | female3bottom000326_09_0213_03_46_008 | F3 | metadata filled | phase | Baseline | Baseline (no injection) |
-| female3bottom000326_09_0213_03_46_008 | F3 | metadata filled | treatment | (empty) | None |
+| female3bottom000326_09_0213_03_46_008 | F3 | metadata filled | treatment | (empty) | Vehicle |
 | female3bottom000326_09_0213_03_46_008 | F3 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
 | male1bottom000626_09_0214_37_16_006 | M1 | stimulus name spelling only | slot 1 | mild touch | Mild touch |
 | male1bottom000626_09_0214_37_16_006 | M1 | stimulus name spelling only | slot 2 | light | Light touch |
@@ -98,7 +104,7 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | male1bottom000626_09_0214_37_16_006 | M1 | metadata filled | sexID | (empty) | M |
 | male1bottom000626_09_0214_37_16_006 | M1 | metadata filled | dayNo | (empty) | 1 |
 | male1bottom000626_09_0214_37_16_006 | M1 | metadata filled | phase | Baseline | Baseline (no injection) |
-| male1bottom000626_09_0214_37_16_006 | M1 | metadata filled | treatment | (empty) | None |
+| male1bottom000626_09_0214_37_16_006 | M1 | metadata filled | treatment | (empty) | Vehicle |
 | male1bottom000626_09_0214_37_16_006 | M1 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
 | male2bottom000526_09_0214_06_31_004 | M2 | stimulus mis-key (clock window) | t=1277.0s is in block 3 (1020-1320s) | Light touch | Heat |
 | male2bottom000526_09_0214_06_31_004 | M2 | stimulus mis-key (clock window) | t=1278.2s is in block 3 (1020-1320s) | Light touch | Heat |
@@ -112,7 +118,7 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | male2bottom000526_09_0214_06_31_004 | M2 | metadata filled | sexID | (empty) | M |
 | male2bottom000526_09_0214_06_31_004 | M2 | metadata filled | dayNo | (empty) | 1 |
 | male2bottom000526_09_0214_06_31_004 | M2 | metadata filled | phase | Baseline | Baseline (no injection) |
-| male2bottom000526_09_0214_06_31_004 | M2 | metadata filled | treatment | (empty) | None |
+| male2bottom000526_09_0214_06_31_004 | M2 | metadata filled | treatment | (empty) | Vehicle |
 | male2bottom000526_09_0214_06_31_004 | M2 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
 | male3bottom000426_09_0213_35_27_011 | M3 | stimulus name spelling only | slot 1 | pin prick | Pin prick |
 | male3bottom000426_09_0213_35_27_011 | M3 | stimulus name spelling only | slot 3 | light | Light touch |
@@ -133,5 +139,5 @@ Stimulus identity comes from the names TYPED WHILE SCORING, not from the randomi
 | male3bottom000426_09_0213_35_27_011 | M3 | metadata filled | sexID | (empty) | M |
 | male3bottom000426_09_0213_35_27_011 | M3 | metadata filled | dayNo | (empty) | 1 |
 | male3bottom000426_09_0213_35_27_011 | M3 | metadata filled | phase | Baseline | Baseline (no injection) |
-| male3bottom000426_09_0213_35_27_011 | M3 | metadata filled | treatment | (empty) | None |
+| male3bottom000426_09_0213_35_27_011 | M3 | metadata filled | treatment | (empty) | Vehicle |
 | male3bottom000426_09_0213_35_27_011 | M3 | guardMin | tap scoring: a duration filter would discard nearly every mark | 2.0 | 0.0 |
