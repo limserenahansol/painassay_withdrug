@@ -1,0 +1,289 @@
+day,mouse,sex,stimulus,behaviour,n_events,n_deliveries
+Day1 no drug,F1,F,Mild touch,withdrawal,40,26
+Day1 no drug,F1,F,Mild touch,flinch,28,26
+Day1 no drug,F1,F,Mild touch,attending,0,26
+Day1 no drug,F1,F,Mild touch,lickbite,0,26
+Day1 no drug,F1,F,Mild touch,guarding,1,26
+Day1 no drug,F1,F,Mild touch,escape,6,26
+Day1 no drug,F1,F,Pin prick,withdrawal,20,16
+Day1 no drug,F1,F,Pin prick,flinch,13,16
+Day1 no drug,F1,F,Pin prick,attending,8,16
+Day1 no drug,F1,F,Pin prick,lickbite,3,16
+Day1 no drug,F1,F,Pin prick,guarding,0,16
+Day1 no drug,F1,F,Pin prick,escape,25,16
+Day1 no drug,F1,F,Light touch,withdrawal,13,22
+Day1 no drug,F1,F,Light touch,flinch,7,22
+Day1 no drug,F1,F,Light touch,attending,0,22
+Day1 no drug,F1,F,Light touch,lickbite,2,22
+Day1 no drug,F1,F,Light touch,guarding,0,22
+Day1 no drug,F1,F,Light touch,escape,6,22
+Day1 no drug,F1,F,Heat,withdrawal,36,23
+Day1 no drug,F1,F,Heat,flinch,22,23
+Day1 no drug,F1,F,Heat,attending,2,23
+Day1 no drug,F1,F,Heat,lickbite,14,23
+Day1 no drug,F1,F,Heat,guarding,1,23
+Day1 no drug,F1,F,Heat,escape,24,23
+Day1 no drug,F2,F,Heat,withdrawal,25,20
+Day1 no drug,F2,F,Heat,flinch,12,20
+Day1 no drug,F2,F,Heat,attending,6,20
+Day1 no drug,F2,F,Heat,lickbite,26,20
+Day1 no drug,F2,F,Heat,guarding,11,20
+Day1 no drug,F2,F,Heat,escape,17,20
+Day1 no drug,F2,F,Mild touch,withdrawal,20,20
+Day1 no drug,F2,F,Mild touch,flinch,1,20
+Day1 no drug,F2,F,Mild touch,attending,5,20
+Day1 no drug,F2,F,Mild touch,lickbite,9,20
+Day1 no drug,F2,F,Mild touch,guarding,1,20
+Day1 no drug,F2,F,Mild touch,escape,17,20
+Day1 no drug,F2,F,Pin prick,withdrawal,32,31
+Day1 no drug,F2,F,Pin prick,flinch,5,31
+Day1 no drug,F2,F,Pin prick,attending,5,31
+Day1 no drug,F2,F,Pin prick,lickbite,14,31
+Day1 no drug,F2,F,Pin prick,guarding,8,31
+Day1 no drug,F2,F,Pin prick,escape,7,31
+Day1 no drug,F2,F,Light touch,withdrawal,14,17
+Day1 no drug,F2,F,Light touch,flinch,7,17
+Day1 no drug,F2,F,Light touch,attending,3,17
+Day1 no drug,F2,F,Light touch,lickbite,2,17
+Day1 no drug,F2,F,Light touch,guarding,1,17
+Day1 no drug,F2,F,Light touch,escape,12,17
+Day1 no drug,F3,F,Heat,withdrawal,35,15
+Day1 no drug,F3,F,Heat,flinch,2,15
+Day1 no drug,F3,F,Heat,attending,5,15
+Day1 no drug,F3,F,Heat,lickbite,33,15
+Day1 no drug,F3,F,Heat,guarding,8,15
+Day1 no drug,F3,F,Heat,escape,38,15
+Day1 no drug,F3,F,Light touch,withdrawal,16,30
+Day1 no drug,F3,F,Light touch,flinch,7,30
+Day1 no drug,F3,F,Light touch,attending,4,30
+Day1 no drug,F3,F,Light touch,lickbite,5,30
+Day1 no drug,F3,F,Light touch,guarding,3,30
+Day1 no drug,F3,F,Light touch,escape,5,30
+Day1 no drug,F3,F,Pin prick,withdrawal,18,21
+Day1 no drug,F3,F,Pin prick,flinch,15,21
+Day1 no drug,F3,F,Pin prick,attending,2,21
+Day1 no drug,F3,F,Pin prick,lickbite,8,21
+Day1 no drug,F3,F,Pin prick,guarding,12,21
+Day1 no drug,F3,F,Pin prick,escape,20,21
+Day1 no drug,F3,F,Mild touch,withdrawal,19,19
+Day1 no drug,F3,F,Mild touch,flinch,9,19
+Day1 no drug,F3,F,Mild touch,attending,4,19
+Day1 no drug,F3,F,Mild touch,lickbite,2,19
+Day1 no drug,F3,F,Mild touch,guarding,2,19
+Day1 no drug,F3,F,Mild touch,escape,7,19
+Day1 no drug,M1,M,Mild touch,withdrawal,29,26
+Day1 no drug,M1,M,Mild touch,flinch,18,26
+Day1 no drug,M1,M,Mild touch,attending,5,26
+Day1 no drug,M1,M,Mild touch,lickbite,4,26
+Day1 no drug,M1,M,Mild touch,guarding,8,26
+Day1 no drug,M1,M,Mild touch,escape,11,26
+Day1 no drug,M1,M,Light touch,withdrawal,21,28
+Day1 no drug,M1,M,Light touch,flinch,28,28
+Day1 no drug,M1,M,Light touch,attending,4,28
+Day1 no drug,M1,M,Light touch,lickbite,7,28
+Day1 no drug,M1,M,Light touch,guarding,2,28
+Day1 no drug,M1,M,Light touch,escape,12,28
+Day1 no drug,M1,M,Heat,withdrawal,18,22
+Day1 no drug,M1,M,Heat,flinch,60,22
+Day1 no drug,M1,M,Heat,attending,15,22
+Day1 no drug,M1,M,Heat,lickbite,9,22
+Day1 no drug,M1,M,Heat,guarding,9,22
+Day1 no drug,M1,M,Heat,escape,10,22
+Day1 no drug,M1,M,Pin prick,withdrawal,27,24
+Day1 no drug,M1,M,Pin prick,flinch,38,24
+Day1 no drug,M1,M,Pin prick,attending,8,24
+Day1 no drug,M1,M,Pin prick,lickbite,0,24
+Day1 no drug,M1,M,Pin prick,guarding,8,24
+Day1 no drug,M1,M,Pin prick,escape,7,24
+Day1 no drug,M2,M,Pin prick,withdrawal,31,23
+Day1 no drug,M2,M,Pin prick,flinch,33,23
+Day1 no drug,M2,M,Pin prick,attending,11,23
+Day1 no drug,M2,M,Pin prick,lickbite,6,23
+Day1 no drug,M2,M,Pin prick,guarding,4,23
+Day1 no drug,M2,M,Pin prick,escape,21,23
+Day1 no drug,M2,M,Mild touch,withdrawal,22,21
+Day1 no drug,M2,M,Mild touch,flinch,22,21
+Day1 no drug,M2,M,Mild touch,attending,9,21
+Day1 no drug,M2,M,Mild touch,lickbite,5,21
+Day1 no drug,M2,M,Mild touch,guarding,6,21
+Day1 no drug,M2,M,Mild touch,escape,15,21
+Day1 no drug,M2,M,Heat,withdrawal,27,16
+Day1 no drug,M2,M,Heat,flinch,43,16
+Day1 no drug,M2,M,Heat,attending,9,16
+Day1 no drug,M2,M,Heat,lickbite,7,16
+Day1 no drug,M2,M,Heat,guarding,10,16
+Day1 no drug,M2,M,Heat,escape,15,16
+Day1 no drug,M2,M,Light touch,withdrawal,17,23
+Day1 no drug,M2,M,Light touch,flinch,8,23
+Day1 no drug,M2,M,Light touch,attending,7,23
+Day1 no drug,M2,M,Light touch,lickbite,0,23
+Day1 no drug,M2,M,Light touch,guarding,1,23
+Day1 no drug,M2,M,Light touch,escape,9,23
+Day1 no drug,M3,M,Pin prick,withdrawal,23,22
+Day1 no drug,M3,M,Pin prick,flinch,11,22
+Day1 no drug,M3,M,Pin prick,attending,13,22
+Day1 no drug,M3,M,Pin prick,lickbite,5,22
+Day1 no drug,M3,M,Pin prick,guarding,2,22
+Day1 no drug,M3,M,Pin prick,escape,10,22
+Day1 no drug,M3,M,Mild touch,withdrawal,27,24
+Day1 no drug,M3,M,Mild touch,flinch,4,24
+Day1 no drug,M3,M,Mild touch,attending,10,24
+Day1 no drug,M3,M,Mild touch,lickbite,3,24
+Day1 no drug,M3,M,Mild touch,guarding,4,24
+Day1 no drug,M3,M,Mild touch,escape,7,24
+Day1 no drug,M3,M,Light touch,withdrawal,26,25
+Day1 no drug,M3,M,Light touch,flinch,10,25
+Day1 no drug,M3,M,Light touch,attending,8,25
+Day1 no drug,M3,M,Light touch,lickbite,1,25
+Day1 no drug,M3,M,Light touch,guarding,5,25
+Day1 no drug,M3,M,Light touch,escape,5,25
+Day1 no drug,M3,M,Heat,withdrawal,28,20
+Day1 no drug,M3,M,Heat,flinch,23,20
+Day1 no drug,M3,M,Heat,attending,12,20
+Day1 no drug,M3,M,Heat,lickbite,12,20
+Day1 no drug,M3,M,Heat,guarding,13,20
+Day1 no drug,M3,M,Heat,escape,14,20
+Day2 drug,F1,F,Pin prick,withdrawal,16,17
+Day2 drug,F1,F,Pin prick,flinch,4,17
+Day2 drug,F1,F,Pin prick,attending,0,17
+Day2 drug,F1,F,Pin prick,lickbite,1,17
+Day2 drug,F1,F,Pin prick,guarding,1,17
+Day2 drug,F1,F,Pin prick,escape,1,17
+Day2 drug,F1,F,Heat,withdrawal,11,15
+Day2 drug,F1,F,Heat,flinch,1,15
+Day2 drug,F1,F,Heat,attending,0,15
+Day2 drug,F1,F,Heat,lickbite,1,15
+Day2 drug,F1,F,Heat,guarding,5,15
+Day2 drug,F1,F,Heat,escape,3,15
+Day2 drug,F1,F,Mild touch,withdrawal,7,13
+Day2 drug,F1,F,Mild touch,flinch,7,13
+Day2 drug,F1,F,Mild touch,attending,0,13
+Day2 drug,F1,F,Mild touch,lickbite,7,13
+Day2 drug,F1,F,Mild touch,guarding,1,13
+Day2 drug,F1,F,Mild touch,escape,0,13
+Day2 drug,F1,F,Light touch,withdrawal,5,13
+Day2 drug,F1,F,Light touch,flinch,1,13
+Day2 drug,F1,F,Light touch,attending,3,13
+Day2 drug,F1,F,Light touch,lickbite,3,13
+Day2 drug,F1,F,Light touch,guarding,5,13
+Day2 drug,F1,F,Light touch,escape,0,13
+Day2 drug,F2,F,Pin prick,withdrawal,12,12
+Day2 drug,F2,F,Pin prick,flinch,10,12
+Day2 drug,F2,F,Pin prick,attending,2,12
+Day2 drug,F2,F,Pin prick,lickbite,1,12
+Day2 drug,F2,F,Pin prick,guarding,2,12
+Day2 drug,F2,F,Pin prick,escape,0,12
+Day2 drug,F2,F,Heat,withdrawal,14,13
+Day2 drug,F2,F,Heat,flinch,12,13
+Day2 drug,F2,F,Heat,attending,4,13
+Day2 drug,F2,F,Heat,lickbite,4,13
+Day2 drug,F2,F,Heat,guarding,4,13
+Day2 drug,F2,F,Heat,escape,1,13
+Day2 drug,F2,F,Light touch,withdrawal,8,18
+Day2 drug,F2,F,Light touch,flinch,0,18
+Day2 drug,F2,F,Light touch,attending,0,18
+Day2 drug,F2,F,Light touch,lickbite,0,18
+Day2 drug,F2,F,Light touch,guarding,0,18
+Day2 drug,F2,F,Light touch,escape,0,18
+Day2 drug,F2,F,Mild touch,withdrawal,9,14
+Day2 drug,F2,F,Mild touch,flinch,3,14
+Day2 drug,F2,F,Mild touch,attending,2,14
+Day2 drug,F2,F,Mild touch,lickbite,1,14
+Day2 drug,F2,F,Mild touch,guarding,3,14
+Day2 drug,F2,F,Mild touch,escape,0,14
+Day2 drug,F3,F,Light touch,withdrawal,6,17
+Day2 drug,F3,F,Light touch,flinch,0,17
+Day2 drug,F3,F,Light touch,attending,0,17
+Day2 drug,F3,F,Light touch,lickbite,0,17
+Day2 drug,F3,F,Light touch,guarding,1,17
+Day2 drug,F3,F,Light touch,escape,1,17
+Day2 drug,F3,F,Mild touch,withdrawal,8,18
+Day2 drug,F3,F,Mild touch,flinch,4,18
+Day2 drug,F3,F,Mild touch,attending,0,18
+Day2 drug,F3,F,Mild touch,lickbite,0,18
+Day2 drug,F3,F,Mild touch,guarding,0,18
+Day2 drug,F3,F,Mild touch,escape,2,18
+Day2 drug,F3,F,Pin prick,withdrawal,17,19
+Day2 drug,F3,F,Pin prick,flinch,16,19
+Day2 drug,F3,F,Pin prick,attending,0,19
+Day2 drug,F3,F,Pin prick,lickbite,0,19
+Day2 drug,F3,F,Pin prick,guarding,3,19
+Day2 drug,F3,F,Pin prick,escape,2,19
+Day2 drug,F3,F,Heat,withdrawal,14,14
+Day2 drug,F3,F,Heat,flinch,16,14
+Day2 drug,F3,F,Heat,attending,7,14
+Day2 drug,F3,F,Heat,lickbite,1,14
+Day2 drug,F3,F,Heat,guarding,2,14
+Day2 drug,F3,F,Heat,escape,3,14
+Day2 drug,M1,M,Light touch,withdrawal,2,12
+Day2 drug,M1,M,Light touch,flinch,0,12
+Day2 drug,M1,M,Light touch,attending,1,12
+Day2 drug,M1,M,Light touch,lickbite,0,12
+Day2 drug,M1,M,Light touch,guarding,0,12
+Day2 drug,M1,M,Light touch,escape,1,12
+Day2 drug,M1,M,Pin prick,withdrawal,14,16
+Day2 drug,M1,M,Pin prick,flinch,9,16
+Day2 drug,M1,M,Pin prick,attending,3,16
+Day2 drug,M1,M,Pin prick,lickbite,0,16
+Day2 drug,M1,M,Pin prick,guarding,0,16
+Day2 drug,M1,M,Pin prick,escape,2,16
+Day2 drug,M1,M,Heat,withdrawal,13,19
+Day2 drug,M1,M,Heat,flinch,8,19
+Day2 drug,M1,M,Heat,attending,0,19
+Day2 drug,M1,M,Heat,lickbite,1,19
+Day2 drug,M1,M,Heat,guarding,1,19
+Day2 drug,M1,M,Heat,escape,1,19
+Day2 drug,M1,M,Mild touch,withdrawal,9,17
+Day2 drug,M1,M,Mild touch,flinch,1,17
+Day2 drug,M1,M,Mild touch,attending,0,17
+Day2 drug,M1,M,Mild touch,lickbite,0,17
+Day2 drug,M1,M,Mild touch,guarding,0,17
+Day2 drug,M1,M,Mild touch,escape,1,17
+Day2 drug,M2,M,Heat,withdrawal,10,19
+Day2 drug,M2,M,Heat,flinch,6,19
+Day2 drug,M2,M,Heat,attending,2,19
+Day2 drug,M2,M,Heat,lickbite,0,19
+Day2 drug,M2,M,Heat,guarding,0,19
+Day2 drug,M2,M,Heat,escape,3,19
+Day2 drug,M2,M,Pin prick,withdrawal,12,17
+Day2 drug,M2,M,Pin prick,flinch,3,17
+Day2 drug,M2,M,Pin prick,attending,4,17
+Day2 drug,M2,M,Pin prick,lickbite,1,17
+Day2 drug,M2,M,Pin prick,guarding,1,17
+Day2 drug,M2,M,Pin prick,escape,3,17
+Day2 drug,M2,M,Mild touch,withdrawal,9,15
+Day2 drug,M2,M,Mild touch,flinch,2,15
+Day2 drug,M2,M,Mild touch,attending,1,15
+Day2 drug,M2,M,Mild touch,lickbite,0,15
+Day2 drug,M2,M,Mild touch,guarding,1,15
+Day2 drug,M2,M,Mild touch,escape,2,15
+Day2 drug,M2,M,Light touch,withdrawal,8,19
+Day2 drug,M2,M,Light touch,flinch,4,19
+Day2 drug,M2,M,Light touch,attending,2,19
+Day2 drug,M2,M,Light touch,lickbite,0,19
+Day2 drug,M2,M,Light touch,guarding,0,19
+Day2 drug,M2,M,Light touch,escape,5,19
+Day2 drug,M3,M,Light touch,withdrawal,11,17
+Day2 drug,M3,M,Light touch,flinch,5,17
+Day2 drug,M3,M,Light touch,attending,2,17
+Day2 drug,M3,M,Light touch,lickbite,0,17
+Day2 drug,M3,M,Light touch,guarding,0,17
+Day2 drug,M3,M,Light touch,escape,3,17
+Day2 drug,M3,M,Mild touch,withdrawal,13,17
+Day2 drug,M3,M,Mild touch,flinch,8,17
+Day2 drug,M3,M,Mild touch,attending,3,17
+Day2 drug,M3,M,Mild touch,lickbite,0,17
+Day2 drug,M3,M,Mild touch,guarding,0,17
+Day2 drug,M3,M,Mild touch,escape,2,17
+Day2 drug,M3,M,Heat,withdrawal,20,21
+Day2 drug,M3,M,Heat,flinch,23,21
+Day2 drug,M3,M,Heat,attending,6,21
+Day2 drug,M3,M,Heat,lickbite,8,21
+Day2 drug,M3,M,Heat,guarding,9,21
+Day2 drug,M3,M,Heat,escape,8,21
+Day2 drug,M3,M,Pin prick,withdrawal,13,16
+Day2 drug,M3,M,Pin prick,flinch,17,16
+Day2 drug,M3,M,Pin prick,attending,6,16
+Day2 drug,M3,M,Pin prick,lickbite,1,16
+Day2 drug,M3,M,Pin prick,guarding,3,16
+Day2 drug,M3,M,Pin prick,escape,1,16

@@ -138,6 +138,58 @@ def trials(folder, label, use_isolation=True):
     return pd.DataFrame(rows)
 
 
+def block_totals(folder, label, use_window=False):
+    """Total events and total deliveries per mouse x stimulus x behaviour.
+
+    This is the numerator and denominator of the change index. With
+    use_window False (the default) EVERY event inside the stimulus block is
+    counted, whatever its timing relative to an individual delivery, because
+    the question is how much of the behaviour the animal did.
+
+    The per-delivery trial table from trials() cannot answer that: it can only
+    see events inside a response window, and for escape/rearing that window
+    holds 29 % of them.
+    """
+    rows = []
+    for p in sorted(glob.glob(os.path.join(folder, "ScoringAB_*.mat"))):
+        M = loadmat(p)
+        fps = f_(M["frameRate"], 30.0)
+        n = int(f_(M.get("nUsed", 0), 0))
+        sc = np.asarray(M["score"]).ravel().astype(int)
+        sc = sc[:n] if n else sc
+        n = len(sc)
+        rx = np.asarray(M.get("reflexEvents", np.empty((0, 2)))).reshape(-1, 2)
+        names = [s_(x) for x in np.asarray(M["stimNames"]).ravel()][:4]
+        dF = np.asarray(M["dFrames"]).ravel().astype(int)
+        dT = np.asarray(M["dTypes"]).ravel().astype(int)
+        mouse, sex = s_(M.get("mouseID", "")), s_(M.get("sexID", ""))
+        for ty in range(1, 5):
+            sel = np.sort(dF[dT == ty])
+            if not len(sel):
+                continue
+            for b in ORDER:
+                w = WIN[b][0]
+                spans = ([(int(f), min(int(f + w * fps), n)) for f in sel]
+                         if use_window else
+                         [(int(sel[0]), min(int(sel[-1] + w * fps), n))])
+                tot = 0
+                for f, hi in spans:
+                    if hi <= f:
+                        continue
+                    if b in REF.values():
+                        c = [k for k, v in REF.items() if v == b][0]
+                        ff = rx[rx[:, 1] == c, 0] if rx.size else np.array([])
+                        tot += int(np.sum((ff >= f) & (ff < hi)))
+                    else:
+                        c = [k for k, v in AFF.items() if v == b][0]
+                        seg = (sc[f - 1:hi - 1] == c).astype(int)
+                        tot += int((np.diff(np.r_[0, seg]) == 1).sum())
+                rows.append(dict(day=label, mouse=mouse, sex=sex,
+                                 stimulus=names[ty - 1], behaviour=b,
+                                 n_events=tot, n_deliveries=len(sel)))
+    return pd.DataFrame(rows)
+
+
 def fisher(a, b, c, d):
     """Odds ratio with a Haldane-Anscombe 0.5 correction, and its 95 % CI."""
     from scipy import stats
@@ -152,10 +204,10 @@ def fisher(a, b, c, d):
 
 
 def rr_ci(r1, r2):
-    """95 % CI for a rate ratio, from the Poisson variance of the totals.
+    """95 % CI for the change index, from the Poisson variance of the totals.
 
-    log(RR) has approximate standard error sqrt(1/N1 + 1/N2) where N1 and N2
-    are the total event counts. A 0.5 offset keeps a zero total finite.
+    log(ratio) has approximate standard error sqrt(1/N1 + 1/N2) where N1 and
+    N2 are the total event counts. A 0.5 offset keeps a zero total finite.
     """
     N1, N2 = float(np.sum(r1)) + .5, float(np.sum(r2)) + .5
     d1, d2 = max(len(r1), 1), max(len(r2), 1)
@@ -163,6 +215,33 @@ def rr_ci(r1, r2):
     se = np.sqrt(1 / N1 + 1 / N2)
     return dict(rr_lo=float(np.exp(np.log(rr) - 1.96 * se)),
                 rr_hi=float(np.exp(np.log(rr) + 1.96 * se)))
+
+
+def poisson_rate_p(n1, t1, n2, t2):
+    """Exact test that two event rates are equal. This is THE p-value for the
+    change index, and it is exact rather than approximate.
+
+    n1 events over t1 stimuli against n2 events over t2 stimuli. Conditional
+    on the total n1 + n2, the number falling on Day 2 is Binomial with
+    p = t2 / (t1 + t2) if the rates are equal, so a two-sided binomial test
+    on that is the exact test.
+
+    Why not Mann-Whitney over the per-delivery counts, which is what this
+    used to be: that needs each event assigned to an individual delivery, so
+    it only works with a response window. Once every event in the block is
+    counted - which is what "how much did the animal do" requires - the
+    per-delivery trial structure is gone and this is the correct test. It also
+    matches the confidence interval above, which already assumes Poisson
+    counts; the two used to come from different models.
+    """
+    from scipy import stats
+    if t1 <= 0 or t2 <= 0 or (n1 + n2) == 0:
+        return np.nan
+    try:
+        return float(stats.binomtest(int(n2), int(n1 + n2),
+                                     t2 / (t1 + t2)).pvalue)
+    except ValueError:
+        return np.nan
 
 
 def mde(p1, n1, n2, alpha=.05, power=.80):
@@ -205,7 +284,7 @@ def fdr(p):
     return q
 
 
-def per_mouse(T, lab1, lab2):
+def per_mouse(T, lab1, lab2, B=None):
     """Two readouts per mouse, because they fail in opposite directions.
 
     RATE   events per delivery. This is exactly the normalisation the design
@@ -234,18 +313,30 @@ def per_mouse(T, lab1, lab2):
             c, d0 = int(d2.responded.sum()), int((1 - d2.responded).sum())
             orr, lo, hi, p = fisher(a, b1, c, d0)
             P1 = a / max(a + b1, 1)
-            r1 = np.asarray(d1.n_responses, float)
-            r2 = np.asarray(d2.n_responses, float)
-            pc = np.nan
-            if len(r1) and len(r2) and not (
-                    np.all(r1 == r1[0]) and np.all(r2 == r1[0])):
-                try:
-                    pc = float(stats.mannwhitneyu(
-                        r1, r2, alternative="two-sided").pvalue)
-                except ValueError:
-                    pass
+            # Rate numerator: block totals when available (every event), else
+            # fall back to the windowed per-delivery counts.
+            if B is not None:
+                bb = B[(B.mouse == m) & (B.behaviour == b)]
+                if stim != "ALL":
+                    bb = bb[bb.stimulus == stim]
+                s1 = bb[bb.day == lab1]
+                s2 = bb[bb.day == lab2]
+                N1, T1 = float(s1.n_events.sum()), float(s1.n_deliveries.sum())
+                N2, T2 = float(s2.n_events.sum()), float(s2.n_deliveries.sum())
+                r1 = np.full(int(T1) or 1, N1 / (T1 or 1))
+                r2 = np.full(int(T2) or 1, N2 / (T2 or 1))
+            else:
+                r1 = np.asarray(d1.n_responses, float)
+                r2 = np.asarray(d2.n_responses, float)
+                N1, T1 = float(np.sum(r1)), float(len(r1))
+                N2, T2 = float(np.sum(r2)), float(len(r2))
+            # exact Poisson rate test on the totals - the p-value that belongs
+            # to the change index, and consistent with its CI
+            pc = poisson_rate_p(N1, T1, N2, T2)
             rows.append(dict(mouse=m, behaviour=b, stimulus=stim,
                              n_deliv_day1=a + b1, n_deliv_day2=c + d0,
+                             n_events_day1=int(np.sum(r1)),
+                             n_events_day2=int(np.sum(r2)),
                              # primary: events per delivery
                              rate_day1=float(r1.mean()) if len(r1) else np.nan,
                              rate_day2=float(r2.mean()) if len(r2) else np.nan,
@@ -271,7 +362,7 @@ def per_mouse(T, lab1, lab2):
     return R
 
 
-def population(T, lab1, lab2):
+def population(T, lab1, lab2, B=None):
     """The mouse is the unit here - one number per animal per day.
 
     Runs on both readouts. 'rate' (events per delivery) is primary, 'hit'
@@ -284,11 +375,26 @@ def population(T, lab1, lab2):
     for metric, col in (("rate", "n_responses"), ("hit", "responded")):
         for b in [x for x in ORDER if x in set(T.behaviour)]:
             for stim in ["ALL"] + sorted(T.stimulus.unique()):
-                sub = T[T.behaviour == b]
-                if stim != "ALL":
-                    sub = sub[sub.stimulus == stim]
-                w = (sub.groupby(["day", "mouse"])[col].mean().reset_index()
-                     .pivot_table(index="mouse", columns="day", values=col))
+                if metric == "rate" and B is not None:
+                    # same numerator as the per-mouse change index, so the
+                    # population row and the forest plot cannot disagree
+                    sub = B[B.behaviour == b]
+                    if stim != "ALL":
+                        sub = sub[sub.stimulus == stim]
+                    agg = (sub.groupby(["day", "mouse"])
+                           [["n_events", "n_deliveries"]].sum().reset_index())
+                    agg["v"] = agg.n_events / agg.n_deliveries.replace(0,
+                                                                       np.nan)
+                    w = agg.pivot_table(index="mouse", columns="day",
+                                        values="v")
+                else:
+                    sub = T[T.behaviour == b]
+                    if stim != "ALL":
+                        sub = sub[sub.stimulus == stim]
+                    w = (sub.groupby(["day", "mouse"])[col].mean()
+                         .reset_index()
+                         .pivot_table(index="mouse", columns="day",
+                                      values=col))
                 if lab1 not in w.columns or lab2 not in w.columns:
                     continue
                 w = w.dropna()
@@ -344,6 +450,15 @@ def _stamp_save(fig, path):
     print(f"  {path}")
 
 
+def stars(p):
+    """Conventional significance marks. ns is printed rather than left blank
+    so a missing star cannot be mistaken for a missing test."""
+    if not np.isfinite(p):
+        return ""
+    return ("***" if p < .001 else "**" if p < .01 else
+            "*" if p < .05 else "ns")
+
+
 def forest(PM, path, lab1, lab2):
     import matplotlib
     matplotlib.use("Agg")
@@ -371,6 +486,13 @@ def forest(PM, path, lab1, lab2):
             ax.plot([r.rate_ratio], [yy], "o", ms=9,
                     color="#C0483B" if sig else "#444",
                     mec="white", mew=1.4, zorder=5)
+            # Stars as well as colour: colour alone is not readable in
+            # greyscale or by a colour-blind reader, and it does not
+            # distinguish p = 0.04 from p = 0.0001.
+            ax.annotate(stars(r.p_rate), (r.rate_ratio, yy),
+                        xytext=(0, 7), textcoords="offset points",
+                        ha="center", va="bottom", fontsize=9,
+                        color="#C0483B" if sig else "#777")
         ax.axvline(1, color="k", ls="--", lw=1.2)
         ax.set_xscale("log")
         # A dense ladder collided into "0.1250.250.5" once a wide CI pulled
@@ -403,11 +525,13 @@ def forest(PM, path, lab1, lab2):
         ax.set_title(NICE[b], fontsize=11, fontweight="bold")
         ax.grid(alpha=.22, axis="x")
     axes[0][0].set_ylabel("mouse")
-    fig.suptitle(f"(total event number / total stimulus delivery), "
-                 f"{lab2} vs {lab1}, one row per mouse\n"
-                 "normalised by that animal's own stimulus count   ·   "
-                 "< 1 = fewer responses on the drug day   ·   "
-                 "red = p < 0.05 for that mouse alone", fontsize=12)
+    fig.suptitle(f"Change index per mouse  =  (total events / total stimuli) "
+                 f"on {lab2}  ÷  the same on {lab1}\n"
+                 "dot = the index, line = 95 % CI, dashed line = 1 (no "
+                 "change)   ·   exact Poisson rate test on that animal's own "
+                 "counts\n"
+                 "*** p<0.001   ** p<0.01   * p<0.05   ns = not significant",
+                 fontsize=11.5)
     fig.tight_layout()
     _stamp_save(fig, path)
 
@@ -470,6 +594,12 @@ def main():
     ap.add_argument("--mockup", action="store_true",
                     help="stamp MOCKUP on every figure and append _MOCKUP to "
                          "its filename; use when --day2 is synthetic")
+    ap.add_argument("--response-window", action="store_true",
+                    help="count only events inside the response window for "
+                         "the change index. Default counts every event in the "
+                         "stimulus block, which is what 'how much did the "
+                         "animal do' needs. The window keeps just 29 %% of "
+                         "escape/rearing.")
     a = ap.parse_args()
     global MOCKUP
     MOCKUP = a.mockup
@@ -500,8 +630,17 @@ def main():
         print("\n  Only Day 1. Re-run with --day2 for the statistics.")
         return
 
-    POP = population(T, a.label1, a.label2)
-    PM = per_mouse(T, a.label1, a.label2)
+    # Block totals drive the change index; the per-delivery trials still drive
+    # the hit-rate sanity check, which needs a window by definition.
+    B = pd.concat([block_totals(a.day1, a.label1, a.response_window),
+                   block_totals(a.day2, a.label2, a.response_window)],
+                  ignore_index=True)
+    B.to_csv(os.path.join(outdir, f"BlockTotals{tag}.csv"), index=False)
+    print("\nchange index counts: "
+          + ("only events inside the response window"
+             if a.response_window else "EVERY event in the stimulus block"))
+    POP = population(T, a.label1, a.label2, B)
+    PM = per_mouse(T, a.label1, a.label2, B)
     POP.to_csv(os.path.join(outdir, f"Stats_population{tag}.csv"), index=False)
     PM.to_csv(os.path.join(outdir, f"Stats_per_mouse{tag}.csv"), index=False)
 
