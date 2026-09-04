@@ -125,13 +125,12 @@ def build():
     # ── 1. analgesia or sedation ─────────────────────────────────────
     slide(
         prs,
-        "Every behaviour fell — including escape/rearing, which is not a pain "
-        "measure",
+        "Everything fell, including the behaviour that is not pain",
         "Change index per behaviour, one dot per mouse, bar = MEDIAN of the "
-        "six per-mouse indices. Every event in the stimulus block counted, "
-        "each mouse divided by its own stimulus count. Log axis. Paired "
-        "Wilcoxon over the six mice (exact, n = 6, smallest possible "
-        "p = 0.031).",
+        "six per-mouse indices. Counts every event in the WHOLE SESSION "
+        "(baseline and rest included), divided by that mouse's total stimulus "
+        "count. Log axis. Paired Wilcoxon over the six mice (exact, n = 6, "
+        "smallest possible p = 0.031).",
         "Medians: licking/biting ×0.20 and escape/rearing ×0.22 fell most, "
         "paw withdrawal ×0.63 and flinch ×0.82 least (attending ×0.51, "
         "guarding ×0.45). Escape/rearing is exploration — Day 1 showed it is "
@@ -146,8 +145,7 @@ def build():
     # ── 2. dose-response, both days ──────────────────────────────────
     slide(
         prs,
-        "Lower on the drug day for all six behaviours, and flatter for the "
-        "affective ones",
+        "Lower on the drug day, in every behaviour",
         "Events per stimulus delivery against stimulus type. Thin line = one "
         "mouse, bold = mean ± SEM over six mice. Both days on shared axes so "
         "the size of the drop is comparable. No statistical test on this "
@@ -160,8 +158,7 @@ def build():
     # ── 3. paired, per stimulus ──────────────────────────────────────
     slide(
         prs,
-        "Paired mouse by mouse: paw withdrawal and escape/rearing move in "
-        "every animal",
+        "Escape/rearing falls at every stimulus, in every mouse",
         "Same measure, paired within animal. Grey line joins the two days for "
         "one mouse; square = mean ± SEM. Paired Wilcoxon per behaviour × "
         "stimulus (exact, n = 6, floor p = 0.031). * p < 0.05, ns = not "
@@ -188,15 +185,17 @@ def build():
     #   escape              6/6            6             0
     slide(
         prs,
-        "Escape/rearing — the behaviour that is NOT pain — is the only one "
-        "significant in all six mice",
+        "Only escape/rearing changed in all six mice",
         "Change index per mouse, dot = the index, line = 95 % CI from the "
-        "Poisson variance of the totals. EXACT POISSON RATE TEST on that "
-        "animal's own counts: conditional on the n₁+n₂ events in total, the "
-        "number landing on Day 2 is Binomial(n₁+n₂, t₂/(t₁+t₂)) if the two "
-        "rates are equal; the two-sided binomial p is exact. Stars are "
-        "uncorrected — 25 of 36 tests reach p<0.05, 22 survive "
-        "Benjamini-Hochberg.",
+        "Poisson variance of the totals. Counts events inside the four "
+        "STIMULUS BLOCKS only — so these indices are slightly lower than "
+        "slide 1, which also counts baseline and rest. EXACT POISSON RATE "
+        "TEST on that animal's own counts: conditional on the n₁+n₂ events "
+        "in total, the number landing on Day 2 is Binomial(n₁+n₂, "
+        "t₂/(t₁+t₂)) if the two rates are equal. Stars are uncorrected — "
+        "25 of 36 tests reach p<0.05, 22 survive Benjamini-Hochberg.",
+        "Each animal received 57–100 stimuli, which is what makes a "
+        "single-animal test possible. "
         "Decreased in / significantly decreased in:  escape 6/6 and 6/6  ·  "
         "withdrawal 6/6 and 5  ·  lick-bite 6/6 and 4  ·  attending 6/6 and 3 "
         " ·  guarding 5/6 and 3  ·  flinch 3/6 and 3 (the other three went "
@@ -206,10 +205,13 @@ def build():
         os.path.join(FIGS, "Fig_forest_per_mouse_allDeliveries.png"))
 
     # ── 5. the dissociation ──────────────────────────────────────────
+    # Titles are kept to one plain clause. The earlier version of this one -
+    # "The affective/reflexive dissociation a biased agonist predicts is not
+    # what happened" - needed two pieces of jargon and a double negative
+    # before it said anything.
     slide(
         prs,
-        "The affective/reflexive dissociation a biased agonist predicts is "
-        "not what happened",
+        "Affective and reflexive pain fell together",
         "Affective (attending + licking/biting + guarding) against reflexive "
         "(withdrawal + flinch), both as events per stimulus delivery. One "
         "arrow per mouse, Day 1 to Day 2. Descriptive — no test on this "
