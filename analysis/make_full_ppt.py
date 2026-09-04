@@ -329,15 +329,16 @@ def build(real=False):
                 "settle the layout and the statistics in advance - and, as "
                 "it turns out, to show that n = 6 is fragile.", warn=True)
 
-    d2_slide(prs, "Primary figure: total event number / total stimulus "
-                  "delivery, both days",
+    d2_slide(prs, "Both days on the same axes, one line per mouse",
+             "D8_dose_response_both_days.png",
+             note or "the size of the drop and the change in curve shape are "
+                     "both only visible when the two days share an axis")
+    d2_slide(prs, "The same data, paired mouse by mouse",
              "D2_per_delivery.png",
              note or "grey line = one mouse measured twice")
-    d2_slide(prs, "Individual level: each mouse's own change",
-             "D5_per_mouse_change.png",
-             note or "consistency across animals is evidence the six-mouse "
-                     "p-value floor cannot express")
-    d2_slide(prs, "Individual level with statistics",
+    # The dot-and-stick per-mouse figure (D5) was dropped: it duplicated the
+    # forest plot below without the confidence intervals.
+    d2_slide(prs, "Individual level: each mouse's own change index",
              "Fig_forest_per_mouse_allDeliveries.png",
              note or "a per-mouse test is possible only because each "
                      "delivery is a trial")
@@ -373,7 +374,7 @@ def build(real=False):
           "Mann-Whitney (secondary)", "reaches 0.0022, but ignores the "
                                       "pairing the design bought"],
          ["Individual", "one delivery", "~90 per mouse per day",
-          "Fisher exact / rate ratio", "well powered for reflexes, detects "
+          "Fisher exact / change index", "well powered for reflexes, detects "
                                        "only large shifts for affective"],
          ["Direction", "the mouse", "6",
           "how many moved the same way", "not a p-value, but survives the "

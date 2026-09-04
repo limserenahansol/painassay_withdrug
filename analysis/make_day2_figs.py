@@ -68,6 +68,22 @@ PRE, POST = 5.0, 15.0
 WIN = {"withdrawal": (3.0, False), "flinch": (3.0, False),
        "attending": (10.0, False), "lickbite": (10.0, False),
        "guarding": (10.0, False), "escape": (10.0, False)}
+# COUNT EVERY EVENT BY DEFAULT, not only those inside a response window.
+#
+# The two numerators answer different questions:
+#   ALL       how much of this behaviour did the animal do
+#   WINDOWED  did this particular stimulus provoke a response
+#
+# The window was the default and it silently discarded most of one behaviour:
+# only 29 % of escape/rearing events start within 10 s of a delivery, because
+# escape/rearing is spontaneous exploration and mostly happens away from the
+# stimulus. That changed the headline - escape/rearing came out at x0.08
+# windowed but x0.22 counting everything.
+#
+# For "how much did the animal do", which is the sedation question, ALL is the
+# correct numerator. --response-window restores the windowed version for the
+# stimulus-evoked question.
+USE_WINDOW = False
 plt.rcParams.update({"font.size": 12, "axes.titlesize": 13,
                      "axes.labelsize": 12, "figure.dpi": 130})
 MOCKUP = False
@@ -155,31 +171,37 @@ def rate_table(data):
     """
     rows = []
     for d in data:
-        allf = np.sort(d["dF"].astype(float))
         for ty in range(1, 5):
-            sel = d["dF"][d["dT"] == ty]
+            sel = np.sort(d["dF"][d["dT"] == ty].astype(int))
             if not len(sel):
                 continue
             nm = d["names"][ty - 1]
             for b in ORDER:
                 w, _ = WIN[b]
-                hi_n = 0
+                # USE_WINDOW off: one span covering the whole block, so every
+                # event during that stimulus is counted whatever its timing.
+                # On: one span per delivery, so only stimulus-evoked responses
+                # are counted.
+                if USE_WINDOW:
+                    spans = [(int(f), min(int(f + w * d["fps"]), d["n"]))
+                             for f in sel]
+                else:
+                    spans = [(int(sel[0]),
+                              min(int(sel[-1] + w * d["fps"]), d["n"]))]
+                hi_n = len(sel)
                 tot = 0
-                for f in sel:
-                    hi = min(int(f + w * d["fps"]), d["n"])
+                for f, hi in spans:
                     if hi <= f:
                         continue
                     if b in REF.values():
                         code = [k for k, v in REF.items() if v == b][0]
                         ff = d["rx"][d["rx"][:, 1] == code, 0] \
                             if d["rx"].size else np.array([])
-                        k = int(np.sum((ff >= f) & (ff < hi)))
+                        tot += int(np.sum((ff >= f) & (ff < hi)))
                     else:
                         code = [k for k, v in AFF.items() if v == b][0]
                         seg = (d["score"][f - 1:hi - 1] == code).astype(int)
-                        k = int((np.diff(np.r_[0, seg]) == 1).sum())
-                    tot += k
-                    hi_n += 1
+                        tot += int((np.diff(np.r_[0, seg]) == 1).sum())
                 if hi_n:
                     rows.append(dict(day=d["day"], mouse=d["mouse"],
                                      sex=d["sex"], stimulus=nm, behaviour=b,
@@ -691,6 +713,56 @@ def d7_power(R, path, lab1, lab2, nsim=4000, seed=3):
     return save(fig, path)
 
 
+# ───── D8: dose-response curve, both days overlaid, per-mouse spaghetti ────
+def d8_dose_both(R, path, lab1, lab2):
+    """The two separate dose-response slides, on one pair of axes.
+
+    Day 1 and Day 2 were being shown as two slides with different y ranges,
+    which made the size of the drop impossible to judge and the change in
+    CURVE SHAPE impossible to see at all. Overlaid on a shared axis, both are
+    immediate: the Day-1 curve rises from light touch to heat, and the Day-2
+    curve is both lower and flatter.
+
+    One thin line per mouse per day (the spaghetti), one bold line for the
+    mean. Nothing is averaged away.
+    """
+    fig, axes = plt.subplots(2, 3, figsize=(15.5, 7.6))
+    xs = np.arange(len(STIM))
+    for ax, b in zip(axes.ravel(), ORDER):
+        for day, col, ls, mk in ((lab1, C1, "-", "o"),
+                                 (lab2, C2, "--", "s")):
+            g = R[(R.behaviour == b) & (R.day == day)]
+            w = g.pivot_table(index="mouse", columns="stimulus",
+                              values="per_delivery").reindex(columns=STIM)
+            if not len(w):
+                continue
+            for _, row in w.iterrows():
+                ax.plot(xs, row.to_numpy(), ls, color=col, lw=.9, alpha=.42,
+                        zorder=2)
+            m = w.mean(axis=0).to_numpy()
+            e = (w.std(axis=0, ddof=1) / np.sqrt(len(w))).to_numpy() \
+                if len(w) > 1 else np.zeros_like(m)
+            ax.errorbar(xs, m, yerr=e, fmt=mk + ls, color=col, lw=2.8,
+                        ms=8, capsize=4, mec="white", mew=1.4, zorder=6,
+                        label=day)
+        ax.set_xticks(xs)
+        ax.set_xticklabels([s.replace(" ", "\n") for s in STIM], fontsize=9)
+        ax.set_title(NICE[b], fontweight="bold",
+                     color=CR if b in REF.values() else CA)
+        ax.set_ylim(bottom=0)
+        ax.grid(alpha=.2, axis="y")
+    axes[0][0].set_ylabel(YLAB, fontsize=11)
+    axes[1][0].set_ylabel(YLAB, fontsize=11)
+    axes[0][2].legend(fontsize=9.5, frameon=False)
+    fig.suptitle("Dose-response on both days, same axes   ·   "
+                 "thin line = one mouse, bold = mean ± SEM\n"
+                 "lower everywhere on the drug day. The stimulus ordering is "
+                 "flattened for licking/biting and escape, but kept for the "
+                 "reflexes", fontsize=12)
+    fig.tight_layout()
+    return save(fig, path)
+
+
 def main():
     global MOCKUP
     ap = argparse.ArgumentParser(description=__doc__,
@@ -703,8 +775,26 @@ def main():
     ap.add_argument("--mockup", action="store_true",
                     help="stamp MOCKUP on every panel; use with synthetic "
                          "Day 2 data")
+    ap.add_argument("--keep-d5", action="store_true",
+                    help="also write D5, the per-mouse change without "
+                         "confidence intervals. Off by default because the "
+                         "forest plot from step4 shows the same thing with "
+                         "statistics added.")
+    ap.add_argument("--response-window", action="store_true",
+                    help="count only events starting within the response "
+                         "window of an individual delivery (3 s reflex, 10 s "
+                         "affective). Default is to count EVERY event in the "
+                         "stimulus block. The window answers 'did this "
+                         "stimulus provoke a response'; the default answers "
+                         "'how much did the animal do'. The window discards "
+                         "71 %% of escape/rearing, which is spontaneous.")
     a = ap.parse_args()
     MOCKUP = a.mockup
+    global USE_WINDOW
+    USE_WINDOW = a.response_window
+    print("counting: " + ("only events inside the response window"
+                          if USE_WINDOW else
+                          "EVERY event in the stimulus block"))
     os.makedirs(a.out, exist_ok=True)
 
     d1 = read_all(a.day1, a.label1)
@@ -732,7 +822,14 @@ def main():
                   a.label1, a.label2)
     d4_dissoc(R, os.path.join(a.out, "D4_reflex_vs_affective.png"),
               a.label1, a.label2)
-    d5_per_mouse(R, os.path.join(a.out, "D5_per_mouse_change.png"),
+    # D5 is no longer produced. It was a dot-and-stick version of exactly the
+    # information in step4's forest plot, which adds a confidence interval and
+    # per-mouse significance on top - two slides that said the same thing. The
+    # function is kept in case a version without statistics is ever wanted.
+    if a.keep_d5:
+        d5_per_mouse(R, os.path.join(a.out, "D5_per_mouse_change.png"),
+                     a.label1, a.label2)
+    d8_dose_both(R, os.path.join(a.out, "D8_dose_response_both_days.png"),
                  a.label1, a.label2)
     d6_raw_vs_norm(R, os.path.join(a.out, "D6_why_normalise.png"),
                    a.label1, a.label2)

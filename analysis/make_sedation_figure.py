@@ -81,8 +81,20 @@ def f_(v, d=np.nan):
     return float(a[0]) if a.size else d
 
 
-def rates(folder):
-    """events per delivery, per mouse per behaviour."""
+def rates(folder, use_window=False):
+    """Events per delivery, per mouse per behaviour.
+
+    use_window=False (the default) counts EVERY event in the session and
+    divides by the total deliveries. That is the right numerator for "how much
+    did the animal do", which is the sedation question.
+
+    use_window=True counts only events starting within the response window of
+    a delivery. An earlier version did that unconditionally and it distorted
+    the headline: the window keeps only 29 % of escape/rearing events, because
+    escape/rearing is spontaneous exploration that mostly happens away from
+    the stimulus. Escape came out at x0.08 windowed against x0.22 counting
+    everything - still the joint-largest fall, but not a tenfold one.
+    """
     out = {}
     for p in sorted(glob.glob(os.path.join(folder, "ScoringAB_*.mat"))):
         M = loadmat(p)
@@ -97,9 +109,10 @@ def rates(folder):
         d = {}
         for b in ORDER:
             w = WIN[b]
+            spans = ([(int(f), min(int(f + w * fps), n)) for f in dF]
+                     if use_window else [(1, n)])
             tot = 0
-            for f in dF:
-                hi = min(int(f + w * fps), n)
+            for f, hi in spans:
                 if hi <= f:
                     continue
                 if b in REF.values():
@@ -150,10 +163,15 @@ def main():
     ap.add_argument("--times", type=float, nargs="*",
                     default=[180, 480, 1140, 1500])
     ap.add_argument("--out", required=True)
+    ap.add_argument("--response-window", action="store_true",
+                    help="count only events inside the response window. "
+                         "Default counts every event, which is the right "
+                         "numerator for 'how much did the animal do'.")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
-    R1, R2 = rates(a.day1), rates(a.day2)
+    R1 = rates(a.day1, a.response_window)
+    R2 = rates(a.day2, a.response_window)
     mice = sorted(set(R1) & set(R2))
     print(f"{len(mice)} mouse/mice in both days: {mice}")
 
@@ -181,7 +199,7 @@ def main():
     ax.set_xticks(range(len(ORDER)))
     ax.set_xticklabels([NICE[b] for b in ORDER], fontsize=8.5)
     ax.set_ylabel("Day 2 / Day 1\n(events per delivery)", fontsize=10.5)
-    ax.set_title("Escape / rearing fell the MOST, not the least",
+    ax.set_title("Escape / rearing fell as hard as any pain behaviour",
                  fontsize=11.5, fontweight="bold")
     ax.grid(alpha=.2, axis="y")
 
@@ -208,10 +226,15 @@ def main():
         "                          exploration included\n\n"
         f"Observed: escape/rearing x{np.median(esc):.2f} "
         f"(median over {len(mice)} mice),\n"
-        f"the largest fall of any behaviour. Paired p = {pp:.3f}.\n"
+        f"paired p = {pp:.3f} - as large as any pain behaviour.\n"
         f"Reflexes fell least (withdrawal "
-        f"x{np.median([R2[m]['withdrawal'] / R1[m]['withdrawal'] for m in mice if R1[m]['withdrawal']]):.2f}) "
-        "- consistent\nwith spinal reflexes surviving sedation.\n\n"
+        f"x{np.median([R2[m]['withdrawal'] / R1[m]['withdrawal'] for m in mice if R1[m]['withdrawal']]):.2f}, "
+        f"flinch "
+        f"x{np.median([R2[m]['flinch'] / R1[m]['flinch'] for m in mice if R1[m]['flinch']]):.2f})\n"
+        "- consistent with spinal reflexes surviving sedation.\n\n"
+        "Every event is counted, not only those inside a\n"
+        "response window: the window keeps just 29 % of\n"
+        "escape/rearing, which is spontaneous.\n\n"
         "This does NOT look like selective analgesia."
     )
     ax.text(0, 1, txt, va="top", ha="left", fontsize=10.2, family="monospace",

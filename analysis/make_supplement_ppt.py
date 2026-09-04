@@ -4,7 +4,7 @@ WHY A SEPARATE FILE
     The main deck stays untouched so it can be open and edited while this is
     generated. This one covers three things the main deck assumes:
 
-      1  how the rate ratio is calculated, worked through on real numbers
+      1  how the change index is calculated, worked through on real numbers
       2  how to read the per-mouse forest plot
       3  Day 2 on its own, plus the video-measured activity result
 
@@ -67,14 +67,14 @@ def build():
     tb(s, Inches(.9), Inches(2.3), Inches(11.5), Inches(1.3),
        "How to read the Day 2 numbers", 38, True, INK)
     tb(s, Inches(.9), Inches(3.6), Inches(11.5), Inches(1.2),
-       "Supplement to the main deck  ·  the rate ratio, the forest plot, "
+       "Supplement to the main deck  ·  the change index, the forest plot, "
        "Day 2 on its own,\nand the activity measured from the video",
        20, False, ACC)
     tb(s, Inches(.9), Inches(5.8), Inches(11.5), Inches(.8),
        f"Hansol Lim   ·   {date.today().isoformat()}", 15, False, GREY)
 
-    # ─────────── 1. the rate ratio, worked ──────────────────────────────
-    divider(prs, "1.  The rate ratio",
+    # ─────────── 1. the change index, worked ────────────────────────────
+    divider(prs, "1.  The change index",
             "one number per mouse per behaviour, and how it is built")
 
     s = blank(prs)
@@ -111,10 +111,10 @@ def build():
        15, False, GREY)
 
     s = blank(prs)
-    head(s, "Step 3: the rate ratio is Day 2 divided by Day 1",
+    head(s, "Step 3: the change index is Day 2 divided by Day 1",
          "so 1 means no change")
     mono(s, Inches(.8), Inches(1.9), Inches(11.7), Inches(1.6),
-         "  rate ratio  =  0.09  /  0.83   =   0.10\n",
+         "  change index  =  0.09  /  0.83   =   0.10\n",
          20)
     table_slide_rows = None
     tb(s, Inches(.8), Inches(3.1), Inches(11.7), Inches(2.6),
@@ -130,6 +130,30 @@ def build():
        "flattens every other bar. A ratio on a log axis treats halving\n"
        "and doubling as the same distance.",
        15, False, GREY)
+
+
+    s = blank(prs)
+    head(s, "One thing the change index does NOT do: filter by timing",
+         "every event is counted, wherever it happened in the block")
+    tb(s, Inches(.8), Inches(1.9), Inches(11.7), Inches(3.2),
+       "An earlier version counted only events starting within a response "
+       "window of a delivery\n"
+       "(3 s for reflexes, 10 s for the affective behaviours). That answers a "
+       "different question:\n\n"
+       "    with a window     did THIS stimulus provoke a response\n"
+       "    without a window  how much of this behaviour did the animal do\n\n"
+       "For counting behaviour - and for the sedation question - the second "
+       "one is what we want,\n"
+       "so the window is now OFF by default.",
+       17, False, INK)
+    tb(s, Inches(.8), Inches(5.2), Inches(11.7), Inches(1.6),
+       "It mattered most for escape / rearing: the 10 s window kept only "
+       "29 % of those events,\n"
+       "because escape / rearing is spontaneous exploration that mostly "
+       "happens away from the\n"
+       "stimulus. Escape came out at ×0.08 windowed against ×0.22 counting "
+       "everything.",
+       16, False, WARN)
 
     table_slide(
         prs, "Why the per-mouse test is possible at all",
@@ -155,8 +179,8 @@ def build():
         ("Each row is one mouse", "F1 at the top, M3 at the bottom, the SAME "
                                   "order in every panel - so you can follow "
                                   "one animal left to right"),
-        ("The dot is that mouse's rate ratio",
-         "Day 2 ÷ Day 1 in events per stimulus"),
+        ("The dot is that mouse's change index",
+         "Day 2 ÷ Day 1 of (total events / total stimuli)"),
         ("The horizontal line is the 95 % confidence interval",
          "a short line means that mouse gave many consistent trials; a long "
          "line means few or scattered"),
@@ -184,24 +208,24 @@ def build():
               "every panel. F1 is the exception: unchanged or up for the pain "
               "behaviours, but still down for escape / rearing.",
               top=1.15)
-    fig_slide(prs, "The same thing without confidence intervals",
-              os.path.join(D2, "D5_per_mouse_change.png"), None,
-              "Simpler version of the previous slide: dot and stick, no "
-              "statistics. Useful when the point is only the direction and "
-              "size.", top=1.15)
+    # The dot-and-stick version (D5) used to be a second slide here. It showed
+    # exactly the same numbers as the forest plot without the confidence
+    # intervals, so it has been dropped rather than shown twice.
 
     # ─────────── 3. Day 2 on its own ────────────────────────────────────
     divider(prs, "3.  Day 2 on its own",
             "the same descriptive figures we made for Day 1, "
             "computed from the drug day only")
+    # The Day-1-only and Day-2-only dose-response slides have been replaced
+    # by the overlaid version: on separate axes with different y ranges the
+    # size of the drop could not be judged and the change in curve shape was
+    # invisible.
+    fig_slide(prs, "Both days on one pair of axes",
+              os.path.join(D2, "D8_dose_response_both_days.png"), None,
+              "Thin line = one mouse, bold = mean ± SEM. Lower everywhere on "
+              "the drug day; the stimulus ordering flattens for licking / "
+              "biting and escape but is kept for the reflexes.", top=1.15)
     for name, title, note in (
-        ("F2_dose_response.png", "Day 2 only: response by stimulus",
-         "the Day-1 ordering (light touch smallest, heat largest) is largely "
-         "flattened"),
-        ("F3_per_delivery.png",
-         "Day 2 only: total event number / total stimulus delivery",
-         "the comparable version - each mouse divided by its own delivery "
-         "count"),
         ("F4_baseline_vs_block.png",
          "Day 2 only: stimulus blocks against each animal's own baseline",
          "worth comparing with the Day-1 version: escape / rearing no longer "

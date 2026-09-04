@@ -262,6 +262,12 @@ def per_mouse(T, lab1, lab2):
     if not R.empty:
         R["q_fisher"] = fdr(R["p_fisher"])
         R["q_rate"] = fdr(R["p_rate"])
+        # "change index" is the name used in the figures and slides. The
+        # rate_ratio / rr_lo / rr_hi columns are kept so anything already
+        # reading these files keeps working.
+        R["change_index"] = R["rate_ratio"]
+        R["change_index_lo"] = R["rr_lo"]
+        R["change_index_hi"] = R["rr_hi"]
     return R
 
 
@@ -393,7 +399,7 @@ def forest(PM, path, lab1, lab2):
         ax.set_yticks(y)
         ax.set_yticklabels(mice, fontsize=10)
         ax.set_ylim(-.7, len(mice) - .3)
-        ax.set_xlabel("rate ratio  (Day 2 / Day 1)", fontsize=9)
+        ax.set_xlabel("change index  (Day 2 / Day 1)", fontsize=9)
         ax.set_title(NICE[b], fontsize=11, fontweight="bold")
         ax.grid(alpha=.22, axis="x")
     axes[0][0].set_ylabel("mouse")
