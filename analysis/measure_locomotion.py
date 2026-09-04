@@ -197,15 +197,31 @@ def summarise(D, day, mouse):
     return out
 
 
-def check(jobs, out):
-    """Draw the detected silhouette on sampled frames so it can be eyeballed."""
+def check(jobs, out, mouse=None):
+    """Draw the detected silhouette on sampled frames so it can be eyeballed.
+
+    Checks EVERY animal by default, not just the first video in the folder.
+    Verifying one mouse and assuming the rest is how the earlier version's
+    floor-locking bug survived as long as it did.
+    """
     TIMES = [120, 420, 780, 1100, 1450, 1600]
     tiles = []
     for day, folder in jobs:
         vids = sorted(glob.glob(os.path.join(folder, "*.avi")))
+        if mouse:
+            vids = [v for v in vids
+                    if os.path.basename(v).lower().startswith(mouse.lower())]
         if not vids:
             print(f"  {day}: no videos in {folder}")
             continue
+      # fall through to the per-video loop below
+        for v in vids:
+            _check_one(day, v, TIMES, tiles)
+    _check_write(tiles, out)
+
+
+def _check_one(day, path, TIMES, tiles):
+        vids = [path]
         cap = cv2.VideoCapture(vids[0])
         fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
         row, hits = [], 0
@@ -236,6 +252,9 @@ def check(jobs, out):
               f"({os.path.basename(vids[0])})")
         if row:
             tiles.append(np.hstack(row))
+
+
+def _check_write(tiles, out):
     if tiles:
         w = max(t.shape[1] for t in tiles)
         tiles = [np.hstack([t, np.zeros((t.shape[0], w - t.shape[1], 3),

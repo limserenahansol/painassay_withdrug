@@ -449,10 +449,25 @@ def d4_dissoc(R, path, lab1, lab2):
 
 # ───── D5: per-mouse effect size, ranked - the individual-level figure ─────
 def d5_per_mouse(R, path, lab1, lab2):
-    """Population means hide whether all six animals moved or only two."""
+    """Population means hide whether all six animals moved or only two.
+
+    Three things this had wrong and now does not:
+
+      * mouse order was sorted by effect size INSIDE each panel, so F1 was the
+        top row in one panel and the bottom row in the next. You could not
+        read one animal across behaviours. The order is now fixed.
+      * "n/6 down" sat at axes y = 1.0 and collided with the panel title.
+      * the x axis was per-cent change, which is bounded at -100 % but
+        unbounded upwards. One mouse at +650 % (F1 guarding, from a near-zero
+        Day-1 baseline) flattened every other bar into invisibility. It is now
+        a RATIO on a log axis, which treats halving and doubling as equal
+        distances and cannot be dominated by one large positive value.
+    """
     behs = ORDER
-    fig, axes = plt.subplots(1, len(behs), figsize=(2.7 * len(behs), 4.6),
-                             sharey=False)
+    mice = sorted({m for m in R.mouse.unique() if m})
+    fig, axes = plt.subplots(1, len(behs), figsize=(2.75 * len(behs), 4.9),
+                             sharey=True)
+    ladder = np.array([1 / 16, 1 / 8, 1 / 4, 1 / 2, 1, 2, 4, 8], float)
     for ax, b in zip(axes, behs):
         g = (R[R.behaviour == b].groupby(["day", "mouse"])
              .per_delivery.mean().reset_index()
@@ -460,26 +475,61 @@ def d5_per_mouse(R, path, lab1, lab2):
                           values="per_delivery"))
         if lab1 not in g.columns or lab2 not in g.columns:
             continue
-        g = g.dropna()
-        g["pct"] = 100 * (g[lab2] - g[lab1]) / g[lab1].replace(0, np.nan)
-        g = g.sort_values("pct")
-        y = np.arange(len(g))
-        ax.barh(y, g.pct, color=[C2 if v < 0 else "#6E8CA0" for v in g.pct],
-                height=.68)
-        ax.axvline(0, color="k", lw=1.2)
+        # fixed row order, one row per mouse, same in every panel
+        g = g.reindex(mice)
+        lo_clip = 1 / 24.0
+        rat, ylab = [], []
+        for m in mice:
+            d1, d2 = g.at[m, lab1], g.at[m, lab2]
+            if not np.isfinite(d1) or d1 == 0:
+                rat.append(np.nan)
+            elif d2 == 0:
+                rat.append(lo_clip)          # total loss, drawn at the edge
+            else:
+                rat.append(d2 / d1)
+            ylab.append(m)
+        rat = np.asarray(rat, float)
+        y = np.arange(len(mice))[::-1]       # F1 at the top
+        for yy, v, m in zip(y, rat, mice):
+            if not np.isfinite(v):
+                continue
+            col = C2 if v < 1 else "#6E8CA0"
+            ax.plot([1, max(v, lo_clip)], [yy, yy], "-", color=col, lw=3.0,
+                    solid_capstyle="butt", zorder=3)
+            ax.plot([max(v, lo_clip)], [yy], "o", ms=7, color=col,
+                    mec="white", mew=1.2, zorder=5)
+            if g.at[m, lab2] == 0:
+                ax.text(lo_clip, yy, " 0", va="center", ha="left",
+                        fontsize=7.5, color=C2)
+        ax.axvline(1, color="k", lw=1.3)
+        ax.set_xscale("log")
+        keep = ladder[(ladder >= np.nanmin(np.r_[rat, 1]) * .7)
+                      & (ladder <= np.nanmax(np.r_[rat, 1]) * 1.4)]
+        if len(keep) < 2:
+            keep = np.array([.5, 1, 2], float)
+        ax.set_xticks(keep)
+        ax.set_xticklabels([("1" if abs(t - 1) < 1e-9 else
+                             (f"1/{int(round(1 / t))}" if t < 1
+                              else f"{int(round(t))}")) for t in keep],
+                           fontsize=8.5)
+        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
         ax.set_yticks(y)
-        ax.set_yticklabels(g.index, fontsize=9)
-        ax.set_title(NICE[b], fontsize=10, fontweight="bold",
+        ax.set_yticklabels(ylab, fontsize=10)
+        ax.set_ylim(-.7, len(mice) - .3)
+        nd = int(np.nansum(rat < 1))
+        ntot = int(np.isfinite(rat).sum())
+        # title and count on separate lines, inside the title block, so they
+        # cannot overlap
+        ax.set_title(f"{NICE[b]}\n{nd}/{ntot} down", fontsize=10,
+                     fontweight="bold",
                      color=CR if b in REF.values() else CA)
-        ax.grid(alpha=.2, axis="x")
-        ax.set_xlabel("% change", fontsize=9)
-        nd = int((g.pct < 0).sum())
-        ax.text(.5, 1.005, f"{nd}/{len(g)} down", transform=ax.transAxes,
-                ha="center", va="bottom", fontsize=9, color="#555")
-    fig.suptitle(f"Individual level: each mouse's own change, "
-                 f"{lab2} vs {lab1}, in {YLAB1}\n"
-                 "consistency across animals is evidence the "
-                 "6-mouse p-value floor of 0.031 cannot express", fontsize=12)
+        ax.grid(alpha=.22, axis="x")
+        ax.set_xlabel("Day 2 / Day 1", fontsize=9)
+    fig.suptitle("One row per mouse, same order in every panel   ·   "
+                 "left of the line = fewer events on the drug day\n"
+                 "ratio of (total events / total stimulus delivery), "
+                 "log axis so a halving and a doubling are the same distance",
+                 fontsize=11.5)
     fig.tight_layout()
     return save(fig, path)
 

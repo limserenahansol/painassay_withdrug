@@ -257,15 +257,20 @@ def session_measures(folder, label):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--day1", default=DAY1)
+    ap.add_argument("--day1", default=DAY1,
+                    help="the folder to describe. Point it at the Day 2 "
+                         "corrected folder with --label to get the same "
+                         "descriptive set for the drug day on its own.")
+    ap.add_argument("--label", default="Day 1 no drug",
+                    help="what to call the --day1 folder in the figures")
     ap.add_argument("--day2", default=None)
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
 
-    L1, B1 = load(a.day1, "Day 1 no drug")
+    L1, B1 = load(a.day1, a.label)
     L, B = L1, B1
-    S = session_measures(a.day1, "Day 1 no drug")
+    S = session_measures(a.day1, a.label)
     have2 = False
     if a.day2 and os.path.exists(os.path.join(a.day2, "BlockMeasures_long.csv")):
         L2, B2 = load(a.day2, "Day 2 drug")

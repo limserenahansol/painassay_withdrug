@@ -348,32 +348,52 @@ def forest(PM, path, lab1, lab2):
     behs = [b for b in ORDER if b in set(A.behaviour)]
     fig, axes = plt.subplots(1, len(behs), figsize=(3.0 * len(behs), 4.4),
                              sharey=True, squeeze=False)
+    # One fixed row order, F1 at the top, identical in every panel. Sorting
+    # per panel meant a mouse changed row between behaviours and no animal
+    # could be followed across the figure.
+    mice = sorted(A.mouse.unique())
     for ax, b in zip(axes[0], behs):
-        g = A[A.behaviour == b].sort_values("mouse").reset_index(drop=True)
-        y = np.arange(len(g))
-        for i, r in g.iterrows():
+        g = (A[A.behaviour == b].set_index("mouse").reindex(mice)
+             .reset_index())
+        y = np.arange(len(mice))[::-1]
+        for yy, (_, r) in zip(y, g.iterrows()):
+            if not np.isfinite(r.rate_ratio):
+                continue
             sig = np.isfinite(r.p_rate) and r.p_rate < .05
-            ax.plot([r.rr_lo, r.rr_hi], [i, i], "-",
+            ax.plot([r.rr_lo, r.rr_hi], [yy, yy], "-",
                     color="#C0483B" if sig else "#999", lw=2.2)
-            ax.plot([r.rate_ratio], [i], "o", ms=9,
+            ax.plot([r.rate_ratio], [yy], "o", ms=9,
                     color="#C0483B" if sig else "#444",
                     mec="white", mew=1.4, zorder=5)
         ax.axvline(1, color="k", ls="--", lw=1.2)
         ax.set_xscale("log")
-        # default log ticks crowd into an unreadable smear over a narrow
-        # range, so place a fixed halving/doubling ladder and label it plainly
+        # A dense ladder collided into "0.1250.250.5" once a wide CI pulled
+        # the range out. Thin the ladder until at most four labels remain.
         lo = np.nanmin(np.r_[g.rr_lo.to_numpy(), g.rate_ratio.to_numpy()])
         hi = np.nanmax(np.r_[g.rr_hi.to_numpy(), g.rate_ratio.to_numpy()])
-        ladder = np.array([.125, .25, .5, 1, 2, 4, 8], float)
+        ladder = np.array([1 / 64, 1 / 32, 1 / 16, .125, .25, .5, 1,
+                           2, 4, 8, 16], float)
         keep = ladder[(ladder >= lo * .8) & (ladder <= hi * 1.25)]
         if len(keep) < 2:
             keep = np.array([.5, 1, 2], float)
+        while len(keep) > 4:
+            one = int(np.argmin(np.abs(keep - 1)))
+            keep = keep[[i for i in range(len(keep))
+                         if i == one or (i - one) % 2 == 0]]
+            if len(keep) > 4:
+                keep = np.r_[keep[keep < 1][-1:], [1.0],
+                             keep[keep > 1][:1]]
+                break
         ax.set_xticks(keep)
-        ax.set_xticklabels([("%g" % t) for t in keep], fontsize=9)
+        ax.set_xticklabels([("1" if abs(t - 1) < 1e-9 else
+                             (f"1/{int(round(1 / t))}" if t < 1
+                              else f"{int(round(t))}")) for t in keep],
+                           fontsize=9)
         ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())
         ax.set_yticks(y)
-        ax.set_yticklabels(g.mouse)
-        ax.set_xlabel("rate ratio")
+        ax.set_yticklabels(mice, fontsize=10)
+        ax.set_ylim(-.7, len(mice) - .3)
+        ax.set_xlabel("rate ratio  (Day 2 / Day 1)", fontsize=9)
         ax.set_title(NICE[b], fontsize=11, fontweight="bold")
         ax.grid(alpha=.22, axis="x")
     axes[0][0].set_ylabel("mouse")
