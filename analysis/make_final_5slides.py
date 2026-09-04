@@ -169,17 +169,20 @@ def build():
     # ── 4. per-mouse change index with statistics ────────────────────
     slide(
         prs,
-        "Each animal tested on its own: escape/rearing is significant in all "
-        "six mice",
+        "Each animal tested on its own: escape/rearing falls in all six mice, "
+        "5 of 6 after correction",
         "Change index per mouse, dot = the index, line = 95 % CI from the "
-        "Poisson variance of the totals. Exact Poisson rate test on that "
-        "animal's own counts: conditional on the total, the number of events "
-        "falling on Day 2 is Binomial with p = t₂/(t₁+t₂) if the rates are "
-        "equal. *** p<0.001, ** p<0.01, * p<0.05, ns = not significant.",
-        "A per-mouse test is possible because each animal received 58–100 "
-        "stimuli. Read across a row to follow one animal: M1 and M2 changed "
-        "in all six behaviours, F1 in four. F1 is the one animal whose "
-        "guarding went UP.",
+        "Poisson variance of the totals. EXACT POISSON RATE TEST on that "
+        "animal's own counts: conditional on the n₁+n₂ events in total, the "
+        "number landing on Day 2 is Binomial(n₁+n₂, t₂/(t₁+t₂)) if the two "
+        "rates are equal; the two-sided binomial p is exact. Stars are "
+        "uncorrected — 25 of 36 tests reach p<0.05, 22 survive "
+        "Benjamini-Hochberg.",
+        "Worked example, M2 escape: 60 events / 83 stimuli on Day 1 versus "
+        "13 / 70 on Day 2, index 0.26. If the rates were equal, 33 of the 73 "
+        "events would be expected on Day 2; 13 were seen, p = 7.7×10⁻⁷. "
+        "Escape/rearing: 6/6 significant uncorrected, 5/6 after FDR (M3 "
+        "p = 0.032 becomes q = 0.082).",
         os.path.join(FIGS, "Fig_forest_per_mouse_allDeliveries.png"))
 
     # ── 5. the dissociation ──────────────────────────────────────────

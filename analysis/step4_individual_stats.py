@@ -328,6 +328,11 @@ def per_mouse(T, lab1, lab2, B=None):
                 s2 = bb[bb.day == lab2]
                 N1, T1 = float(s1.n_events.sum()), float(s1.n_deliveries.sum())
                 N2, T2 = float(s2.n_events.sum()), float(s2.n_deliveries.sum())
+                # Reconstructed arrays only so rr_ci and the means below keep
+                # working. NEVER read the event count back out of them: 70
+                # copies of 13/70 sum to 12.999999999999998, and int() on
+                # that reported 12 events instead of 13. N1/N2 are carried
+                # through explicitly below.
                 r1 = np.full(int(T1) or 1, N1 / (T1 or 1))
                 r2 = np.full(int(T2) or 1, N2 / (T2 or 1))
             else:
@@ -340,8 +345,10 @@ def per_mouse(T, lab1, lab2, B=None):
             pc = poisson_rate_p(N1, T1, N2, T2)
             rows.append(dict(mouse=m, behaviour=b, stimulus=stim,
                              n_deliv_day1=a + b1, n_deliv_day2=c + d0,
-                             n_events_day1=int(np.sum(r1)),
-                             n_events_day2=int(np.sum(r2)),
+                             n_events_day1=int(round(N1)),
+                             n_events_day2=int(round(N2)),
+                             n_stim_day1=int(round(T1)),
+                             n_stim_day2=int(round(T2)),
                              # primary: events per delivery
                              rate_day1=float(r1.mean()) if len(r1) else np.nan,
                              rate_day2=float(r2.mean()) if len(r2) else np.nan,
@@ -530,13 +537,17 @@ def forest(PM, path, lab1, lab2):
         ax.set_title(NICE[b], fontsize=11, fontweight="bold")
         ax.grid(alpha=.22, axis="x")
     axes[0][0].set_ylabel("mouse")
+    nsig = int((A.p_rate < .05).sum())
+    nq = int((A.q_rate < .05).sum()) if "q_rate" in A else -1
     fig.suptitle(f"Change index per mouse  =  (total events / total stimuli) "
                  f"on {lab2}  ÷  the same on {lab1}\n"
                  "dot = the index, line = 95 % CI, dashed line = 1 (no "
                  "change)   ·   exact Poisson rate test on that animal's own "
                  "counts\n"
-                 "*** p<0.001   ** p<0.01   * p<0.05   ns = not significant",
-                 fontsize=11.5)
+                 "*** p<0.001   ** p<0.01   * p<0.05   ns = not significant   "
+                 f"·   stars are UNCORRECTED: {nsig} of {len(A)} tests reach "
+                 f"p<0.05, {nq} survive Benjamini-Hochberg",
+                 fontsize=11)
     fig.tight_layout()
     _stamp_save(fig, path)
 
