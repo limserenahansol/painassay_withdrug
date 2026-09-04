@@ -101,19 +101,26 @@ def build():
 
     # ── title ────────────────────────────────────────────────────────
     s = blank(prs)
-    tb(s, Inches(.9), Inches(2.0), Inches(11.5), Inches(1.4),
-       "SBI-553 on the acute pain assay", 40, True, INK)
-    tb(s, Inches(.9), Inches(3.4), Inches(11.5), Inches(1.6),
+    tb(s, Inches(.9), Inches(1.5), Inches(11.5), Inches(1.2),
+       "SBI-553 on the acute pain assay", 38, True, INK)
+    tb(s, Inches(.9), Inches(2.7), Inches(11.5), Inches(1.5),
+       "A general reduction in behaviour, not selective analgesia",
+       26, True, WARN)
+    tb(s, Inches(.9), Inches(4.0), Inches(11.5), Inches(1.8),
+       "Escape / rearing is exploration, not pain — and it was the ONLY "
+       "behaviour significantly\nreduced in all six mice. The reflexes fell "
+       "least. A selective analgesic predicts the\nopposite ordering.",
+       20, False, ACC)
+    tb(s, Inches(.9), Inches(5.9), Inches(11.5), Inches(1.1),
        "Day 1 no drug vs Day 2 SBI-553, same six mice, dosed 10 min before "
-       "the assay\nFive figures. Every number recomputed from the scoring "
-       "files and cross-checked.", 20, False, ACC)
-    tb(s, Inches(.9), Inches(5.5), Inches(11.5), Inches(1.4),
+       "the assay.  No vehicle group.\n"
        "change index  =  (total events ÷ total stimuli) on Day 2   ÷   "
-       "the same on Day 1\n"
-       "All six mice received SBI-553. There was no vehicle group.",
-       16, False, GREY)
-    tb(s, Inches(.9), Inches(6.9), Inches(11.5), Inches(.5),
-       f"Hansol Lim   ·   {date.today().isoformat()}", 13, False, GREY)
+       "the same on Day 1",
+       15, False, GREY)
+    tb(s, Inches(.9), Inches(7.0), Inches(11.5), Inches(.45),
+       f"Hansol Lim   ·   {date.today().isoformat()}   ·   every number "
+       f"recomputed from the scoring files and cross-checked",
+       12, False, GREY)
 
     # ── 1. analgesia or sedation ─────────────────────────────────────
     slide(
@@ -167,10 +174,22 @@ def build():
         os.path.join(FIGS, "D2_per_delivery.png"))
 
     # ── 4. per-mouse change index with statistics ────────────────────
+    # Counting note. Reporting only "N mice significant" hides direction: on
+    # guarding, four animals are significant but one of them (F1) went UP
+    # nine-fold, so only three decreased significantly. Every count below
+    # states the direction.
+    #
+    #                    decreased   sig. decreased   increased
+    #   withdrawal          6/6            5             0
+    #   flinch              3/6            3             3   <- split
+    #   attending           6/6            3             0
+    #   lickbite            6/6            4             0
+    #   guarding            5/6            3             1   <- F1 x9.00
+    #   escape              6/6            6             0
     slide(
         prs,
-        "Each animal tested on its own: escape/rearing falls in all six mice, "
-        "5 of 6 after correction",
+        "Escape/rearing — the behaviour that is NOT pain — is the only one "
+        "significant in all six mice",
         "Change index per mouse, dot = the index, line = 95 % CI from the "
         "Poisson variance of the totals. EXACT POISSON RATE TEST on that "
         "animal's own counts: conditional on the n₁+n₂ events in total, the "
@@ -178,11 +197,12 @@ def build():
         "rates are equal; the two-sided binomial p is exact. Stars are "
         "uncorrected — 25 of 36 tests reach p<0.05, 22 survive "
         "Benjamini-Hochberg.",
-        "Worked example, M2 escape: 60 events / 83 stimuli on Day 1 versus "
-        "13 / 70 on Day 2, index 0.26. If the rates were equal, 33 of the 73 "
-        "events would be expected on Day 2; 13 were seen, p = 7.7×10⁻⁷. "
-        "Escape/rearing: 6/6 significant uncorrected, 5/6 after FDR (M3 "
-        "p = 0.032 becomes q = 0.082).",
+        "Decreased in / significantly decreased in:  escape 6/6 and 6/6  ·  "
+        "withdrawal 6/6 and 5  ·  lick-bite 6/6 and 4  ·  attending 6/6 and 3 "
+        " ·  guarding 5/6 and 3  ·  flinch 3/6 and 3 (the other three went "
+        "UP). Guarding has one animal moving the other way: F1 rose nine-fold "
+        "(2/87 → 12/58, p = 0.0006), so four significant does not mean four "
+        "decreased.",
         os.path.join(FIGS, "Fig_forest_per_mouse_allDeliveries.png"))
 
     # ── 5. the dissociation ──────────────────────────────────────────

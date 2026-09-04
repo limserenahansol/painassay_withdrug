@@ -240,6 +240,34 @@ def main():
         print(f"  MISSING {f2}")
         FAILS.append(f"missing {f2}")
 
+    # ---- 7. direction-aware counts, the numbers slides quote -------
+    # "N mice significant" is not the same as "N mice decreased". On
+    # guarding four animals are significant but one of them went UP
+    # nine-fold, so quoting four as a decrease is wrong. Printing all three
+    # columns makes that impossible to get wrong by accident.
+    print("\n=== counts a slide is allowed to quote ===")
+    f3 = os.path.join(a.figs, "Stats_per_mouse_allDeliveries.csv")
+    if os.path.exists(f3):
+        PMx = pd.read_csv(f3)
+        PMx = PMx[PMx.stimulus == "ALL"]
+        print(f"  {'behaviour':11s} {'decreased':>10s} {'sig down':>9s} "
+              f"{'sig UP':>7s} {'q<0.05':>7s}  animals moving up")
+        for b in ORDER:
+            g = PMx[PMx.behaviour == b]
+            dn = int((g.change_index < 1).sum())
+            sd = int(((g.p_rate < .05) & (g.change_index < 1)).sum())
+            su = int(((g.p_rate < .05) & (g.change_index > 1)).sum())
+            sq = int((g.q_rate < .05).sum())
+            ups = ", ".join(f"{r.mouse} x{r.change_index:.2f}"
+                            for r in g[g.change_index > 1].itertuples())
+            print(f"  {b:11s} {dn:8d}/6 {sd:9d} {su:7d} {sq:7d}  "
+                  f"{ups or '-'}")
+        print("  Quote 'decreased in N/6' or 'significantly decreased in N', "
+              "never a bare\n  significance count for a behaviour that has an "
+              "animal moving the other way.")
+    else:
+        FAILS.append(f"missing {f3}")
+
     print("\n" + "=" * 68)
     if FAILS:
         print(f"{len(FAILS)} PROBLEM(S):")
