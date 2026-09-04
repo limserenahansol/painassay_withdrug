@@ -1,0 +1,7 @@
+file,mouse,session,dur_s,n_del,runs_after_fix,n_miskey_fixed,n_unknown,labelled_frames,stimuli,attending_events,attending_before_merge,lickbite_events,lickbite_before_merge,guarding_events,guarding_before_merge,escape_events,escape_before_merge
+female1bottom000726_09_0311_32_06_001,F1,7,1682.6,58,4,4,0,1464,Pin prick:17 | Heat:15 | Mild touch:13 | Light touch:13,3,3,13,14,15,19,12,12
+female2bottom000826_09_0312_01_40,F2,8,1687.4,57,4,4,0,753,Pin prick:12 | Heat:13 | Light touch:18 | Mild touch:14,8,8,7,7,9,12,2,3
+female3bottom000926_09_0312_31_11,F3,9,1680.9,68,4,4,0,905,Light touch:17 | Mild touch:18 | Pin prick:19 | Heat:14,7,8,1,1,6,7,9,10
+male1bottom001226_09_0314_00_32,M1,10,1696.6,64,4,0,0,754,Light touch:12 | Pin prick:16 | Heat:19 | Mild touch:17,5,6,1,1,1,1,11,11
+male2bottom001126_09_0313_30_46,M2,11,1694.4,70,4,6,0,1665,Heat:19 | Pin prick:17 | Mild touch:15 | Light touch:19,13,13,3,3,3,4,21,22
+male3bottom001026_09_0313_01_11,M3,12,1689.2,71,4,4,0,1985,Light touch:17 | Mild touch:17 | Heat:21 | Pin prick:16,19,20,9,9,12,13,22,23

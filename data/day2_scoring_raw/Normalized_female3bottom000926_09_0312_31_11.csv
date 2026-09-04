@@ -1,0 +1,5 @@
+Session,Day,Mouse ID,Sex,Phase,Treatment,Stim code,Stimulus,n_delivered,obs_time_s,withdrawal_n,withdrawal_rate,flinch_n,flinch_per_stim,attending_n,attending_per_stim,attending_dur_s,attending_s_per_stim,attending_pct_time,lickbite_n,lickbite_per_stim,lickbite_dur_s,lickbite_s_per_stim,lickbite_pct_time,guarding_n,guarding_per_stim,guarding_dur_s,guarding_s_per_stim,guarding_pct_time,escape_n,escape_per_stim,escape_dur_s,escape_s_per_stim,escape_pct_time
+,2,,,Baseline,BLIND,1,Light touch,21,178.47,6,0.2857,0,0.0000,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,1,0.0476,1.60,0.0762,0.90
+,2,,,Baseline,BLIND,2,Mild touch,14,131.73,8,0.5714,4,0.2857,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,1,0.0714,1.80,0.1286,1.37
+,2,,,Baseline,BLIND,3,pin,19,170.97,17,0.8947,16,0.8421,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,1,0.0526,0.17,0.0088,0.10
+,2,,,Baseline,BLIND,4,heat,14,164.20,13,0.9286,16,1.1429,7,0.5000,3.50,0.2500,2.13,0,0.0000,0.00,0.0000,0.00,0,0.0000,0.00,0.0000,0.00,4,0.2857,5.53,0.3952,3.37

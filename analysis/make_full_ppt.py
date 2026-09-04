@@ -58,13 +58,26 @@ def divider(prs, title, sub, warn=False):
     return s
 
 
+REAL = False
+
+
 def d2(name):
-    """A Day-2 figure, mockup filename first."""
-    for cand in (os.path.join(D2FIGS, name.replace(".png", "_MOCKUP.png")),
-                 os.path.join(D2FIGS, name)):
+    """A Day-2 figure.
+
+    Order matters. In mockup mode the stamped `_MOCKUP` file is preferred; in
+    real mode the plain name is preferred and the stamped one must never be
+    picked up, or a real deck would silently show synthetic panels.
+    """
+    plain = os.path.join(D2FIGS, name)
+    stamped = os.path.join(D2FIGS, name.replace(".png", "_MOCKUP.png"))
+    order = (plain, stamped) if REAL else (stamped, plain)
+    for cand in order:
         if os.path.exists(cand):
+            if REAL and cand is stamped:
+                print(f"  WARNING: only a MOCKUP exists for {name} - "
+                      f"regenerate it from the real Day 2")
             return cand
-    return os.path.join(D2FIGS, name)
+    return plain
 
 
 def d2_slide(prs, title, name, note):
@@ -73,26 +86,71 @@ def d2_slide(prs, title, name, note):
     return fig_slide(prs, title, d2(name), None, note, top=1.15)
 
 
+def headline(prs):
+    """The result and its main caveat, immediately after the title.
+
+    Lab members read the first slides and skim the rest, so this goes near
+    the front rather than at the end.
+    """
+    if True:
+        s = blank(prs)
+        tb(s, Inches(.9), Inches(1.5), Inches(11.6), Inches(1.0),
+           "Day 2 result, in one line", 32, True, INK)
+        tb(s, Inches(.9), Inches(2.6), Inches(11.6), Inches(1.4),
+           "Every behaviour fell after SBI-553 — including the one that "
+           "is NOT a pain measure.", 22, True, WARN)
+        tb(s, Inches(.9), Inches(4.0), Inches(11.6), Inches(2.4),
+           "Escape / rearing is exploration. On Day 1 it went DOWN under "
+           "stimulation, so it is not\n"
+           "pain. It fell to 8 % of Day 1 — the largest drop of any "
+           "behaviour. Reflexes fell least\n"
+           "(withdrawal to 72 %).\n\n"
+           "That pattern is what sedation looks like, not selective "
+           "analgesia. All six mice got\n"
+           "SBI-553, so there is no vehicle group to separate drug from day, "
+           "order or habituation.",
+           18, False, INK)
+        bullets_slide(
+            prs, "How to read this deck",
+            [("Day 1 = no drug, Day 2 = SBI-553 10 min before the assay",
+              "same six mice, same four stimuli, block order randomised"),
+             ("Every number is total events ÷ total stimuli delivered",
+              "the stimulus is hand-delivered so the count is never fixed: "
+              "83–100 taps on Day 1, 58–71 on Day 2"),
+             ("Two behaviour classes, never added together",
+              "REFLEXIVE withdrawal + flinch  ·  AFFECTIVE attending + "
+              "lick/bite + guarding  ·  and escape/rearing as the "
+              "exploration control"),
+             ("n = 6, paired. The smallest p this test can give is 0.031",
+              "so 0.031 means ‘all six moved the same way’, which "
+              "is the strongest statement the design supports")],
+            "four things that make the rest of the slides readable")
+    return prs
+
+
 def build(real=False):
     note = None if real else MOCK_NOTE
     prs = deck()
 
     # ─────────────────────────── frame ────────────────────────────────
     title_slide(prs, date.today().isoformat())
-    bullets_slide(
-        prs, "What this deck covers",
-        [("Day 1 is real data, six mice, fully scored and QC'd",
-          "all four stimulus blocks clean in all six sessions"),
-         ("Day 2 is a planned comparison, shown with synthetic numbers",
-          "so the figures and the statistics are agreed before the "
-          "experiment, not after"),
-         ("Every measure is total event number / total stimulus delivery",
-          "never a raw count - the number of taps is not fixed, 16 to 31 for "
-          "pin prick on Day 1 alone"),
-         ("Statistics at two levels",
-          "population: six mice, paired.  individual: each mouse's own "
-          "~90 deliveries")],
-        "four things to take away")
+    if real:
+        headline(prs)
+    else:
+        bullets_slide(
+            prs, "What this deck covers",
+            [("Day 1 is real data, six mice, fully scored and QC'd",
+              "all four stimulus blocks clean in all six sessions"),
+             ("Day 2 is a planned comparison, shown with synthetic numbers",
+              "so the figures and the statistics are agreed before the "
+              "experiment, not after"),
+             ("Every measure is total event number / total stimulus delivery",
+              "never a raw count - the number of taps is not fixed, 16 to 31 "
+              "for pin prick on Day 1 alone"),
+             ("Statistics at two levels",
+              "population: six mice, paired.  individual: each mouse's own "
+              "~90 deliveries")],
+            "four things to take away")
 
     # ─────────────────────────── method ───────────────────────────────
     divider(prs, "Method", "design, behaviours, and what the scoring "
@@ -251,14 +309,25 @@ def build(real=False):
           "median CV 0.49 across mice - which is why Day 2 must be paired")],
         "real data, six mice")
 
-    # ────────────────────── Day 2 plan (mockup) ──────────────────────
-    divider(prs, "Day 2 plan",
-            "EVERY NUMBER IN THIS SECTION IS SYNTHETIC.\n\n"
-            "The figures below were generated from a fake Day 2 with a known "
-            "40 % affective reduction injected, escape left unchanged, and "
-            "one deliberate non-responder. They exist to settle the layout "
-            "and the statistics in advance - and, as it turns out, to show "
-            "that n = 6 is fragile.", warn=True)
+    # ────────────────────── Day 2 ────────────────────────────────────
+    if real:
+        divider(prs, "Day 2   SBI-553",
+                "same six mice, dosed 10 min before the assay. "
+                "No vehicle group.")
+        d2_slide(prs, "Analgesia or sedation? The exploration control answers "
+                      "it",
+                 "S1_sedation_evidence.png",
+                 "Escape / rearing is not a pain measure, and it fell "
+                 "hardest (to 8 %). Reflexes fell least (to 72 %). A "
+                 "selective analgesic would have spared exploration.")
+    else:
+        divider(prs, "Day 2 plan",
+                "EVERY NUMBER IN THIS SECTION IS SYNTHETIC.\n\n"
+                "The figures below were generated from a fake Day 2 with a "
+                "known 40 % affective reduction injected, escape left "
+                "unchanged, and one deliberate non-responder. They exist to "
+                "settle the layout and the statistics in advance - and, as "
+                "it turns out, to show that n = 6 is fragile.", warn=True)
 
     d2_slide(prs, "Primary figure: total event number / total stimulus "
                   "delivery, both days",
@@ -284,9 +353,10 @@ def build(real=False):
              note or "a biased agonist moves points DOWN more than LEFT")
 
     # ─────────────────── the power problem the mockup found ──────────
-    divider(prs, "What the mockup revealed",
-            "this part is NOT synthetic - it comes from the Day 1 "
-            "variability and from the arithmetic of the test")
+    divider(prs, "How much can n = 6 actually show?" if real
+            else "What the mockup revealed",
+            "from the measured between-mouse variability and from the "
+            "arithmetic of the exact test")
     d2_slide(prs, "n = 6 may not be enough",
              "D7_power_planning.png",
              "Left: with one non-responder, power for a 40 % effect at "
@@ -311,22 +381,58 @@ def build(real=False):
         "the population test is the design; the per-mouse test is what "
         "rescues it at n = 6",
         colw=[1.6, 1.6, 2.0, 2.6, 4.4])
-    bullets_slide(
-        prs, "Decisions needed before Day 2",
-        [("Animal number", "n = 6 gives ~0.49 power for a 40 % effect if one "
-                            "animal does not respond. n = 8-10 is robust."),
-         ("Keep the delivery count as even as possible between days",
-          "normalisation handles unequal counts, but it cannot recover "
-          "power that was never there"),
-         ("Add a TTL or LED marker on the applicator",
-          "solves stimulus timing, identity and camera sync at once, and "
-          "removes the scorer from the delivery mark entirely"),
-         ("Decide now: second baseline block at session end?",
-          "it would separate drug effect from time-in-session drift"),
-         ("Pick the primary outcome before Day 2 is scored",
-          "one behaviour, one stimulus, one measure - everything else is "
-          "then explicitly secondary")],
-        "open questions, not conclusions")
+    if real:
+        bullets_slide(
+            prs, "What this experiment cannot tell us yet",
+            [("A vehicle group. All six mice got SBI-553",
+              "so drug, day, block order and habituation are confounded. "
+              "The next cohort must have a vehicle arm."),
+             ("Whether the drop is analgesia at all",
+              "escape / rearing fell to 8 % - the exploration control fell "
+              "hardest. A locomotion or body-temperature readout would "
+              "settle it directly."),
+             ("A dose that separates the two",
+              "if 10 min post-dose is peak sedation, a lower dose or a "
+              "later time point may show analgesia without hypoactivity"),
+             ("Animal number",
+              "n = 6 gives ~0.49 power for a 40 % effect if one animal does "
+              "not respond. n = 8-10 is robust."),
+             ("A hardware stimulus marker (TTL or LED on the applicator)",
+              "solves timing, stimulus identity and camera sync at once, and "
+              "takes the scorer out of the delivery mark")],
+            "the honest list, so nobody over-reads the result")
+        bullets_slide(
+            prs, "What it does show",
+            [("The assay works and the scoring is reliable",
+              "four clean stimulus blocks in all twelve sessions, and the "
+              "stimuli separate on Day 1"),
+             ("SBI-553 at this dose and timing produces a large, "
+              "consistent behavioural reduction",
+              "6/6 mice for lick/bite and escape, paired p = 0.031 - the "
+              "floor of the test"),
+             ("The reduction is NOT selective for pain behaviours",
+              "reflexes fell least (x0.72), exploration fell most (x0.08). "
+              "That ordering is the opposite of a biased analgesic."),
+             ("The per-delivery design makes per-mouse tests possible",
+              "escape / rearing is individually significant in 5 of the 6 "
+              "animals on their own ~60-100 deliveries")],
+            "what the data supports as it stands")
+    else:
+        bullets_slide(
+            prs, "Decisions needed before Day 2",
+            [("Animal number",
+              "n = 6 gives ~0.49 power for a 40 % effect if one animal does "
+              "not respond. n = 8-10 is robust."),
+             ("Keep the delivery count as even as possible between days",
+              "normalisation handles unequal counts, but it cannot recover "
+              "power that was never there"),
+             ("Add a TTL or LED marker on the applicator",
+              "solves stimulus timing, identity and camera sync at once"),
+             ("Decide now: second baseline block at session end?",
+              "it would separate drug effect from time-in-session drift"),
+             ("Pick the primary outcome before Day 2 is scored",
+              "one behaviour, one stimulus, one measure")],
+            "open questions, not conclusions")
 
     return prs
 
@@ -338,7 +444,21 @@ def main():
     ap.add_argument("--real", action="store_true",
                     help="drop the MOCKUP notes; only use once the Day 2 "
                          "figures come from real scoring")
+    ap.add_argument("--day2-figs", default=None,
+                    help="folder holding the Day 2 figures. Defaults to the "
+                         "mockup folder, so --real without this would show "
+                         "synthetic figures with the warnings removed - the "
+                         "worst possible combination.")
     a = ap.parse_args()
+    global D2FIGS, REAL
+    REAL = a.real
+    if a.day2_figs:
+        D2FIGS = a.day2_figs
+    elif a.real:
+        raise SystemExit(
+            "--real needs --day2-figs pointing at the REAL Day 2 figures.\n"
+            "Without it the deck would show synthetic numbers with the "
+            "MOCKUP warnings stripped off.")
     prs = build(real=a.real)
     out = a.out or os.path.join(
         OUTDIR, f"mini1p_SBI553_full_{date.today().isoformat()}"

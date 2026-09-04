@@ -1,0 +1,65 @@
+Session,Day,Mouse ID,Sex,Phase,Treatment,Trial,Stim code,Stimulus,Rep,Obs window (s),Withdrawal (0/1),Flinch count,Attending count,Attending dur (s),Lick/bite count,Lick/bite dur (s),Guarding count,Guarding dur (s),Escape/rear count,Escape/rear dur (s),Scorer,Video file,Notes
+,2,,,Baseline,BLIND,1,1,Light touch,1,0.87,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,2,1,Light touch,2,0.83,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,3,1,Light touch,3,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,4,1,Light touch,4,0.83,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,5,1,Light touch,5,1.40,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,6,1,Light touch,6,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,7,1,Light touch,7,1.73,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,8,1,Light touch,8,1.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,9,1,Light touch,9,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,10,1,Light touch,10,1.07,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,11,1,Light touch,11,1.40,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,12,1,Light touch,12,30.00,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,13,2,pin,1,2.50,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,14,2,pin,2,2.63,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,15,2,pin,3,17.67,1,1,1,2.03,0,0.00,0,0.00,1,0.33,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,16,2,pin,4,0.50,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,17,2,pin,5,0.30,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,18,2,pin,6,4.20,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,19,2,pin,7,30.00,1,0,1,0.30,0,0.00,0,0.00,1,1.53,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,20,2,pin,8,1.77,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,21,2,pin,9,2.37,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,22,2,pin,10,2.57,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,23,2,pin,11,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,24,2,pin,12,1.37,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,25,2,pin,13,2.03,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,26,2,pin,14,30.00,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,27,2,pin,15,1.40,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,28,2,pin,16,30.00,1,1,2,3.50,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,29,3,Heat,1,0.90,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,30,3,Heat,2,1.03,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,31,3,Heat,3,8.40,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,32,3,Heat,4,1.70,1,1,0,0.00,1,0.70,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,33,3,Heat,5,1.93,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,34,3,Heat,6,7.17,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,35,3,Heat,7,30.00,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,36,3,Heat,8,1.97,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,37,3,Heat,9,0.93,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,38,3,Heat,10,0.77,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,39,3,Heat,11,30.00,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,40,3,Heat,12,0.87,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,41,3,Heat,13,1.30,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,42,3,Heat,14,30.00,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,43,3,Heat,15,3.90,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,44,3,Heat,16,0.87,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,45,3,Heat,17,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,46,3,Heat,18,1.00,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,47,3,Heat,19,30.00,0,0,0,0.00,0,0.00,0,0.00,1,0.73,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,48,4,mild,1,0.77,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,49,4,mild,2,0.77,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,50,4,mild,3,30.00,1,0,0,0.00,0,0.00,0,0.00,1,1.73,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,51,4,mild,4,4.77,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,52,4,mild,5,0.37,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,53,4,mild,6,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,54,4,mild,7,1.47,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,55,4,mild,8,2.20,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,56,4,mild,9,30.00,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,57,4,mild,10,2.10,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,58,4,mild,11,2.40,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,59,4,mild,12,30.00,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,60,4,mild,13,1.80,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,61,4,mild,14,1.43,1,1,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,62,4,mild,15,0.60,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,63,4,mild,16,1.43,1,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s
+,2,,,Baseline,BLIND,64,4,mild,17,30.00,0,0,0,0.00,0,0.00,0,0.00,0,0.00,,male1bottom001226_09_0314_00_32.avi,dual view; guard min 2.0s

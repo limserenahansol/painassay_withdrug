@@ -1,0 +1,7 @@
+file,session,mouse,sex,day,phase,fps,nUsed,guardMin,session_s,n_periods,n_deliveries,n_unknown_type,n_blocks,block_order,n_del_per_block,any_truncated,baseline_covered_s,block_window_overlaps,uncertain_pct_session
+ScoringAB_female1bottom000726_09_0311_32_06_001.mat,7,F1,F,2,Post-treatment,30.00003000003,50479,0.0,1682.6316507,5,58,0,4,Pin prick > Heat > Mild touch > Light touch,17 / 15 / 13 / 13,0,299.99969999999996,0,0.0
+ScoringAB_female2bottom000826_09_0312_01_40.mat,8,F2,F,2,Post-treatment,30.00003000003,50621,0.0,1687.3649793,5,57,0,4,Pin prick > Heat > Light touch > Mild touch,12 / 13 / 18 / 14,0,299.99969999999996,0,0.0
+ScoringAB_female3bottom000926_09_0312_31_11.mat,9,F3,F,2,Post-treatment,30.00003000003,50426,0.0,1680.8649857999999,5,68,0,4,Light touch > Mild touch > Pin prick > Heat,17 / 18 / 19 / 14,0,299.99969999999996,0,0.0
+ScoringAB_male1bottom001226_09_0314_00_32.mat,10,M1,M,2,Post-treatment,30.00003000003,50899,0.0,1696.6316367,5,64,0,4,Light touch > Pin prick > Heat > Mild touch,12 / 16 / 19 / 17,0,299.99969999999996,0,0.0
+ScoringAB_male2bottom001126_09_0313_30_46.mat,11,M2,M,2,Post-treatment,30.00003000003,50833,0.0,1694.4316388999998,5,70,0,4,Heat > Pin prick > Mild touch > Light touch,19 / 17 / 15 / 19,0,299.99969999999996,0,0.0
+ScoringAB_male3bottom001026_09_0313_01_11.mat,12,M3,M,2,Post-treatment,30.00003000003,50677,0.0,1689.2316440999998,5,71,0,4,Light touch > Mild touch > Heat > Pin prick,17 / 17 / 21 / 16,0,299.99969999999996,0,0.0

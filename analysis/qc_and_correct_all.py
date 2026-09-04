@@ -167,7 +167,8 @@ def load_schedule():
 
 
 # ───────────────────────── one session ─────────────────────────────────────
-def process(path, S, merge_s):
+def process(path, S, merge_s, sess_lo=1, sess_hi=6, name_source=None,
+            day_no=1, treatment_all=None):
     M = loadmat(path, squeeze_me=False)
     vid = os.path.basename(path)[len("ScoringAB_"):-4]
     k = mkey(vid)
@@ -202,9 +203,15 @@ def process(path, S, merge_s):
     # key i was used for the i-th block - so slot i is the sheet's Stim i.
     # This also resolves female3, where the typed names had "Mild touch" twice
     # and no "Light touch" at all.
-    sched_row = S[(S["Mouse ID"] == mid) & (S["Day"] == 1) &
-                  (S["Phase"].astype(str).str.startswith("Baseline"))]
-    src = NAME_SOURCE.get(mid, "sheet")
+    # Which sheet rows apply is an argument, not a constant. Day 1 used
+    # sessions 1-6 (the "Baseline (no injection)" rows). The drug day was run
+    # by working down the sheet to the NEXT six rows, sessions 7-12, which the
+    # sheet labels "Day 1 Post-treatment" - verified by matching the names
+    # typed while scoring against all three candidate row sets: 7-12 agreed
+    # 24/24, the sheet's own Day-2 rows agreed 6/24 and 4/24.
+    sched_row = S[(S["Mouse ID"] == mid) &
+                  (S["Session"].between(sess_lo, sess_hi))]
+    src = (name_source or NAME_SOURCE).get(mid, "sheet")
     typed_names = [norm_name(n) for n in raw_names]
     if src == "typed" or not len(sched_row):
         names = list(typed_names)
@@ -350,15 +357,37 @@ def process(path, S, merge_s):
     meta = {}
     if len(row):
         r = row.iloc[0]
-        meta = dict(sessionNo=str(int(r["Session"])), mouseID=str(r["Mouse ID"]),
-                    sexID=str(r["Sex"]), dayNo="1", phase=str(r["Phase"]),
-                    treatment=str(r["Treatment"]))
+        # dayNo is the RECORDING day, not the sheet's Day column. The drug day
+        # used sheet rows 7-12, which the sheet labels Day 1, but the recording
+        # happened on the second day. Writing the sheet's value here would
+        # have relabelled a Day-2 session as Day 1 and silently merged the two
+        # days in every downstream group-by.
+        meta = dict(sessionNo=str(int(r["Session"])),
+                    mouseID=str(r["Mouse ID"]), sexID=str(r["Sex"]),
+                    dayNo=str(day_no), phase=str(r["Phase"]))
+        # Treatment is the one field the sheet may be wrong about: Hansol
+        # reports all six mice received SBI-553 on the drug day, while rows
+        # 7-12 assign Vehicle to three of them. Writing the sheet value would
+        # invent a vehicle control that was never run, so it is only written
+        # when it is not overridden, and any disagreement is FLAGGED.
+        sheet_tx = str(r["Treatment"])
+        if treatment_all:
+            meta["treatment"] = treatment_all
+            if sheet_tx != treatment_all:
+                flag("treatment differs from the sheet",
+                     f"sheet says '{sheet_tx}' for session "
+                     f"{int(r['Session'])}, recorded as '{treatment_all}' on "
+                     f"your instruction that every mouse received it",
+                     action=f"wrote '{treatment_all}'")
+        else:
+            meta["treatment"] = sheet_tx
         for kk, vv in meta.items():
             old = s_(M.get(kk, ""))
             if old != vv:
                 chg("metadata filled", kk, old if old else "(empty)", vv)
     else:
-        flag("no schedule row", f"mouse '{mid}' Day 1 baseline not in the sheet")
+        flag("no schedule row",
+             f"mouse '{mid}' not found in sessions {sess_lo}-{sess_hi}")
 
     # ---- 6. count-only scoring: turn the duration filter off -------------
     if f_(M.get("guardMin", 2.0), 2.0) != 0:
@@ -401,7 +430,30 @@ def main():
     ap.add_argument("--out", default=os.path.join(ROOT, "output_corrected"))
     ap.add_argument("--merge-s", type=float, default=MERGE_S)
     ap.add_argument("--report-only", action="store_true")
+    ap.add_argument("--sched-sessions", default="1-6",
+                    help="which schedule rows this folder corresponds to. "
+                         "Day 1 = 1-6, the drug day = 7-12 (verified 24/24 "
+                         "against the names typed while scoring).")
+    ap.add_argument("--day-no", default="1",
+                    help="the RECORDING day to stamp on every session. Not "
+                         "taken from the sheet's Day column, which refers to "
+                         "the planned design rather than the calendar.")
+    ap.add_argument("--treatment-all", default=None,
+                    help="override the sheet's Treatment for every session, "
+                         "e.g. SBI-553 when all six mice were dosed. Any "
+                         "disagreement with the sheet is flagged, not hidden.")
+    ap.add_argument("--trust-typed", action="store_true",
+                    help="take stimulus names as typed for every mouse and "
+                         "only FLAG differences from the sheet. Use when the "
+                         "typed names already agree with the sheet, so no "
+                         "name is silently rewritten.")
     a = ap.parse_args()
+    try:
+        lo, hi = (int(x) for x in a.sched_sessions.split("-"))
+    except ValueError:
+        raise SystemExit("--sched-sessions must look like 1-6")
+    nsrc = {m: "typed" for m in
+            ("F1", "F2", "F3", "M1", "M2", "M3")} if a.trust_typed else None
 
     if os.path.abspath(a.out) == os.path.abspath(a.src):
         raise SystemExit("refusing to write into the original folder")
@@ -413,7 +465,9 @@ def main():
     print(f"originals : {a.src}   (never modified)")
     print(f"corrected : {a.out}")
     print(f"merge gap {a.merge_s:g}s   blocks assigned by the clock "
-          f"(5-10, 11-16, 17-22, 23-28 min)\n")
+          f"(5-10, 11-16, 17-22, 23-28 min)")
+    print(f"schedule rows: sessions {lo}-{hi}   "
+          f"names: {'as TYPED, sheet differences only flagged' if a.trust_typed else 'from the SHEET'}\n")
 
     if not a.report_only:
         os.makedirs(a.out, exist_ok=True)
@@ -421,7 +475,7 @@ def main():
     FACTS, CHG, FLG = [], [], []
     for f in files:
         out, facts, chg, flg, vid, fps, nUsed, score = process(
-            f, S, a.merge_s)
+            f, S, a.merge_s, lo, hi, nsrc, a.day_no, a.treatment_all)
         FACTS.append(facts); CHG += chg; FLG += flg
         print(f"  {facts['mouse'] or '?':3s} S{facts['session'] or '?':>2s} "
               f"{vid[:26]:28s} {facts['n_del']:3d} del  "
