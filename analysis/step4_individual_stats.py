@@ -163,6 +163,17 @@ def block_totals(folder, label, use_window=False):
         dF = np.asarray(M["dFrames"]).ravel().astype(int)
         dT = np.asarray(M["dTypes"]).ravel().astype(int)
         mouse, sex = s_(M.get("mouseID", "")), s_(M.get("sexID", ""))
+        # True bout start frames, computed once over the session. Counting
+        # rising edges inside a slice would count a bout that was already
+        # running when the window opened as a new one.
+        ST = {}
+        for c, nm in AFF.items():
+            e = np.diff(np.concatenate(([0], (sc == c).astype(np.int8), [0])))
+            ST[nm] = np.flatnonzero(e == 1) + 1
+        for c, nm in REF.items():
+            ff = rx[rx[:, 1] == c, 0].astype(int) if rx.size \
+                else np.array([], int)
+            ST[nm] = ff[(ff >= 1) & (ff <= n)]
         for ty in range(1, 5):
             sel = np.sort(dF[dT == ty])
             if not len(sel):
@@ -172,18 +183,12 @@ def block_totals(folder, label, use_window=False):
                 spans = ([(int(f), min(int(f + w * fps), n)) for f in sel]
                          if use_window else
                          [(int(sel[0]), min(int(sel[-1] + w * fps), n))])
+                st = ST[b]
                 tot = 0
                 for f, hi in spans:
                     if hi <= f:
                         continue
-                    if b in REF.values():
-                        c = [k for k, v in REF.items() if v == b][0]
-                        ff = rx[rx[:, 1] == c, 0] if rx.size else np.array([])
-                        tot += int(np.sum((ff >= f) & (ff < hi)))
-                    else:
-                        c = [k for k, v in AFF.items() if v == b][0]
-                        seg = (sc[f - 1:hi - 1] == c).astype(int)
-                        tot += int((np.diff(np.r_[0, seg]) == 1).sum())
+                    tot += int(np.sum((st >= f) & (st < hi)))
                 rows.append(dict(day=label, mouse=mouse, sex=sex,
                                  stimulus=names[ty - 1], behaviour=b,
                                  n_events=tot, n_deliveries=len(sel)))

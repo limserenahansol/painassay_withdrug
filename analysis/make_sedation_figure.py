@@ -106,23 +106,27 @@ def rates(folder, use_window=False):
         rx = np.asarray(M.get("reflexEvents", np.empty((0, 2)))).reshape(-1, 2)
         dF = np.asarray(M["dFrames"]).ravel().astype(int)
         mid = s_(M.get("mouseID", "")).upper()
+        # true bout starts, once per session - a rising edge inside a slice
+        # would count a bout already running at the window edge as a new one
+        ST = {}
+        for c, nm in AFF.items():
+            e = np.diff(np.concatenate(([0], (sc == c).astype(np.int8), [0])))
+            ST[nm] = np.flatnonzero(e == 1) + 1
+        for c, nm in REF.items():
+            ff = rx[rx[:, 1] == c, 0].astype(int) if rx.size \
+                else np.array([], int)
+            ST[nm] = ff[(ff >= 1) & (ff <= n)]
         d = {}
         for b in ORDER:
             w = WIN[b]
             spans = ([(int(f), min(int(f + w * fps), n)) for f in dF]
-                     if use_window else [(1, n)])
+                     if use_window else [(1, n + 1)])
+            st = ST[b]
             tot = 0
             for f, hi in spans:
                 if hi <= f:
                     continue
-                if b in REF.values():
-                    code = [k for k, v in REF.items() if v == b][0]
-                    ff = rx[rx[:, 1] == code, 0] if rx.size else np.array([])
-                    tot += int(np.sum((ff >= f) & (ff < hi)))
-                else:
-                    code = [k for k, v in AFF.items() if v == b][0]
-                    seg = (sc[f - 1:hi - 1] == code).astype(int)
-                    tot += int((np.diff(np.r_[0, seg]) == 1).sum())
+                tot += int(np.sum((st >= f) & (st < hi)))
             d[b] = tot / len(dF) if len(dF) else np.nan
         out[mid] = d
     return out

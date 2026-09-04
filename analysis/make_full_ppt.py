@@ -102,9 +102,10 @@ def headline(prs):
         tb(s, Inches(.9), Inches(4.0), Inches(11.6), Inches(2.4),
            "Escape / rearing is exploration. On Day 1 it went DOWN under "
            "stimulation, so it is not\n"
-           "pain. It fell to 8 % of Day 1 — the largest drop of any "
-           "behaviour. Reflexes fell least\n"
-           "(withdrawal to 72 %).\n\n"
+           "pain. It fell to 22 % of Day 1, as far as licking / biting "
+           "(20 %) — the joint largest drop.\n"
+           "Reflexes fell least (withdrawal to 63 %, flinch to 82 %), but "
+           "withdrawal still fell in all six.\n\n"
            "That pattern is what sedation looks like, not selective "
            "analgesia. All six mice got\n"
            "SBI-553, so there is no vehicle group to separate drug from day, "
@@ -317,9 +318,11 @@ def build(real=False):
         d2_slide(prs, "Analgesia or sedation? The exploration control answers "
                       "it",
                  "S1_sedation_evidence.png",
-                 "Escape / rearing is not a pain measure, and it fell "
-                 "hardest (to 8 %). Reflexes fell least (to 72 %). A "
-                 "selective analgesic would have spared exploration.")
+                 "Escape / rearing is not a pain measure, and it fell as far "
+                 "as any pain behaviour (to 22 %, median over six mice; "
+                 "licking / biting 20 %). Reflexes fell least (withdrawal "
+                 "63 %, flinch 82 %). A selective analgesic would have "
+                 "spared exploration.")
     else:
         divider(prs, "Day 2 plan",
                 "EVERY NUMBER IN THIS SECTION IS SYNTHETIC.\n\n"
@@ -389,7 +392,7 @@ def build(real=False):
               "so drug, day, block order and habituation are confounded. "
               "The next cohort must have a vehicle arm."),
              ("Whether the drop is analgesia at all",
-              "escape / rearing fell to 8 % - the exploration control fell "
+              "escape / rearing fell to 22 % - the exploration control fell "
               "hardest. A locomotion or body-temperature readout would "
               "settle it directly."),
              ("A dose that separates the two",
@@ -412,10 +415,12 @@ def build(real=False):
               "6/6 mice for lick/bite and escape, paired p = 0.031 - the "
               "floor of the test"),
              ("The reduction is NOT selective for pain behaviours",
-              "reflexes fell least (x0.72), exploration fell most (x0.08). "
-              "That ordering is the opposite of a biased analgesic."),
+              "exploration fell as far as any pain behaviour (escape x0.22, "
+              "lick/bite x0.20) while the reflexes fell least (withdrawal "
+              "x0.63, flinch x0.82). That ordering is the opposite of a "
+              "biased analgesic."),
              ("The per-delivery design makes per-mouse tests possible",
-              "escape / rearing is individually significant in 5 of the 6 "
+              "escape / rearing is individually significant in all 6 "
               "animals on their own ~60-100 deliveries")],
             "what the data supports as it stands")
     else:

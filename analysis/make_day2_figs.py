@@ -162,6 +162,28 @@ def reflex_occupancy(rx, code, fps, dF, pre, post, n):
     return np.vstack(rows) if rows else np.empty((0, a + b))
 
 
+def bout_starts(d):
+    """True first frame of every bout, per behaviour, over the whole session.
+
+    Counting rising edges inside a time slice is wrong at the slice edge: with
+    np.r_[0, seg] a bout that was ALREADY RUNNING when the window opened looks
+    like a new bout starting there, so every window boundary can manufacture
+    an event. verify_final_numbers.py caught one such case (F1, Day 1, Heat,
+    attending: 2 counted, 1 real). Computing starts once over the session and
+    then asking which fall inside the span cannot do that.
+    """
+    out = {}
+    for code, nm in AFF.items():
+        m = (d["score"] == code).astype(np.int8)
+        e = np.diff(np.concatenate(([0], m, [0])))
+        out[nm] = np.flatnonzero(e == 1) + 1          # 1-based frame
+    for code, nm in REF.items():
+        ff = (d["rx"][d["rx"][:, 1] == code, 0].astype(int)
+              if d["rx"].size else np.array([], int))
+        out[nm] = ff[(ff >= 1) & (ff <= d["n"])]
+    return out
+
+
 def rate_table(data):
     """Events per delivery, one row per mouse x day x stimulus x behaviour.
 
@@ -171,6 +193,7 @@ def rate_table(data):
     """
     rows = []
     for d in data:
+        ST = bout_starts(d)
         for ty in range(1, 5):
             sel = np.sort(d["dF"][d["dT"] == ty].astype(int))
             if not len(sel):
@@ -189,19 +212,12 @@ def rate_table(data):
                     spans = [(int(sel[0]),
                               min(int(sel[-1] + w * d["fps"]), d["n"]))]
                 hi_n = len(sel)
+                st = ST[b]
                 tot = 0
                 for f, hi in spans:
                     if hi <= f:
                         continue
-                    if b in REF.values():
-                        code = [k for k, v in REF.items() if v == b][0]
-                        ff = d["rx"][d["rx"][:, 1] == code, 0] \
-                            if d["rx"].size else np.array([])
-                        tot += int(np.sum((ff >= f) & (ff < hi)))
-                    else:
-                        code = [k for k, v in AFF.items() if v == b][0]
-                        seg = (d["score"][f - 1:hi - 1] == code).astype(int)
-                        tot += int((np.diff(np.r_[0, seg]) == 1).sum())
+                    tot += int(np.sum((st >= f) & (st < hi)))
                 if hi_n:
                     rows.append(dict(day=d["day"], mouse=d["mouse"],
                                      sex=d["sex"], stimulus=nm, behaviour=b,
