@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pressure Logger</title>
+<style>
+  :root {
+    --bg: #f3f4f6; --card: #ffffff; --text: #111827; --muted: #6b7280; --border: #e5e7eb;
+    --input-bg: #ffffff; --input-border: #d1d5db; --accent: #2563eb; --accent-text: #ffffff;
+    --rec: #dc2626; --ok: #16a34a; --busy: #d97706; --line: #2563eb; --grid: #eef0f3;
+    --shade: rgba(250, 204, 21, 0.38); --thr: #dc2626; --warn-bg: #fef3c7; --chip: #f3f4f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115; --card: #171a21; --text: #e5e7eb; --muted: #9ca3af; --border: #262b35;
+      --input-bg: #0f1115; --input-border: #353c48; --accent: #3b82f6; --line: #60a5fa;
+      --grid: #232834; --shade: rgba(250, 204, 21, 0.25); --thr: #f87171; --warn-bg: #3b2f0b;
+      --chip: #232834;
+    }
+  }
+  html { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  header {
+    position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px 12px; padding: 10px 16px; background: var(--card); border-bottom: 1px solid var(--border);
+  }
+  h1 { font-size: 16px; margin: 0 4px 0 0; font-weight: 650; }
+  h2 {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+    margin: 0 0 12px; font-weight: 650;
+  }
+  .spacer { flex: 1; }
+  .muted { color: var(--muted); }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 650; background: var(--chip); color: var(--muted); white-space: nowrap;
+  }
+  .pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .pill.on { color: var(--ok); }
+  .pill.busy { color: var(--busy); }
+  .pill.err { color: var(--rec); }
+  #connInfo { font-size: 13px; overflow-wrap: anywhere; }
+  main {
+    display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 16px; padding: 16px;
+    max-width: 1500px; margin: 0 auto;
+  }
+  @media (max-width: 940px) { main { grid-template-columns: minmax(0, 1fr); } }
+  .side { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; min-width: 0; }
+  .field { display: block; margin-bottom: 12px; font-size: 12px; font-weight: 600; color: var(--muted); }
+  .field input, .field textarea { display: block; width: 100%; margin-top: 4px; font-weight: 400; }
+  .field .note { font-weight: 400; }
+  input, textarea, select {
+    font: inherit; color: var(--text); background: var(--input-bg); border: 1px solid var(--input-border);
+    border-radius: 8px; padding: 7px 9px; min-width: 0;
+  }
+  textarea { resize: vertical; min-height: 92px; }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  input:disabled { opacity: 0.55; }
+  input.warn { background: var(--warn-bg); }
+  select { max-width: 280px; }
+  button {
+    font: inherit; font-weight: 600; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--input-border);
+    background: var(--card); color: var(--text); cursor: pointer;
+  }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  button.primary {
+    display: block; width: 100%; padding: 12px; font-size: 15px; background: var(--accent);
+    color: var(--accent-text); border-color: transparent; margin-top: 12px;
+  }
+  .recording button.primary { background: var(--rec); }
+  .next { font-size: 12px; margin: 2px 0 12px; color: var(--muted); }
+  .next code {
+    display: block; margin-top: 4px; padding: 6px 8px; border-radius: 6px; background: var(--chip);
+    color: var(--text); font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere;
+  }
+  .rec-title { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; }
+  .recording .rec-title { color: var(--rec); }
+  .rec-sub { color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .rec-file { font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted); overflow-wrap: anywhere; margin-top: 4px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--rec); animation: pulse 1s infinite; flex: none; }
+  @keyframes pulse { 50% { opacity: 0.25; } }
+  .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; cursor: pointer; }
+  .plot-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .plot-head h2 { margin-bottom: 8px; }
+  canvas { display: block; width: 100%; height: 440px; }
+  @media (max-width: 600px) { canvas { height: 300px; } }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 12px; font-size: 13px; }
+  .controls label { display: inline-flex; align-items: center; gap: 6px; }
+  .controls input[type=number] { width: 104px; }
+  #win { width: 72px; }
+  .controls .check { margin-top: 0; }
+  .sessions { grid-column: 1 / -1; }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 650; white-space: nowrap; }
+  td { font-variant-numeric: tabular-nums; }
+  td.details { white-space: pre-wrap; min-width: 220px; }
+  #toasts { position: fixed; right: 16px; bottom: 16px; z-index: 20; display: flex; flex-direction: column; gap: 8px; max-width: calc(100vw - 32px); }
+  .toast {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--accent);
+    border-radius: 8px; padding: 10px 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15); transition: opacity 0.4s;
+  }
+  .toast.ok { border-left-color: var(--ok); }
+  .toast.err { border-left-color: var(--rec); }
+  .toast.hide { opacity: 0; }
+  #offline {
+    display: none; position: fixed; inset: 0; z-index: 30; background: rgba(0, 0, 0, 0.55);
+    align-items: center; justify-content: center; padding: 16px;
+  }
+  #offline.show { display: flex; }
+  #offline > div { background: var(--card); border-radius: 12px; padding: 24px 28px; max-width: 440px; text-align: center; }
+  #offline h3 { margin: 0 0 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pressure Logger</h1>
+  <span id="conn" class="pill">…</span>
+  <span id="connInfo" class="muted"></span>
+  <span class="spacer"></span>
+  <select id="port" title="Serial port"><option value="">Auto-detect</option></select>
+  <button id="refresh" title="Refresh the port list">↻</button>
+  <button id="connBtn">Connect</button>
+  <button id="quit">Quit app</button>
+</header>
+
+<main>
+  <section class="side">
+    <div class="card">
+      <h2>Session info</h2>
+      <label class="field">Folder
+        <input id="folder" placeholder="e.g. pain_cohort1" autocomplete="off" spellcheck="false">
+      </label>
+      <label class="field">Mouse ID
+        <input id="mouse" placeholder="e.g. M01" autocomplete="off" spellcheck="false">
+      </label>
+      <label class="field">Details <span class="note">— <span id="detailsNote">saved with the session when it ends</span></span>
+        <textarea id="details" placeholder="condition, drug, experimenter, notes…"></textarea>
+      </label>
+      <div class="next">Next file <code id="next">…</code></div>
+      <button id="openFolder">Open folder</button>
+    </div>
+
+    <div class="card" id="recCard">
+      <h2>Recording</h2>
+      <div id="recTitle" class="rec-title">…</div>
+      <div id="recSub" class="rec-sub"></div>
+      <div id="recFile" class="rec-file"></div>
+      <button id="recBtn" class="primary">Start recording</button>
+      <label class="check"><input type="checkbox" id="autoTtl"> Start automatically at the first TTL pulse</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="plot-head">
+      <h2>Live signal</h2>
+      <span id="plotInfo" class="muted"></span>
+    </div>
+    <canvas id="plot"></canvas>
+    <div class="controls">
+      <label>Window <input id="win" type="number" min="1" max="300" step="1"> s</label>
+      <label>Lower <input id="lo" type="number" step="any"></label>
+      <label>Upper <input id="hi" type="number" step="any"></label>
+      <button id="baseline">Set baseline (1 s average)</button>
+      <label class="check"><input type="checkbox" id="fitThr"> Keep thresholds in view</label>
+    </div>
+  </section>
+
+  <section class="card sessions">
+    <h2>Sessions saved today</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Saved</th><th>Folder</th><th>Mouse</th><th>Session</th><th>Started by</th><th>Duration</th><th>TTL pulses</th><th>Details</th></tr></thead>
+        <tbody id="sessRows"></tbody>
+      </table>
+    </div>
+    <p id="noSess" class="muted">No sessions yet today.</p>
+  </section>
+</main>
+
+<div id="toasts"></div>
+<div id="offline"><div>
+  <h3 id="offTitle">The logger app is not running</h3>
+  <p id="offText" class="muted">Start it with <b>run_pressure.command</b>. This window reconnects by itself.</p>
+</div></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const KEEP_S = 300;
+let st = null, sid = null, connId = null, lastSeq = -1, savedN = -1, filled = false, quitting = false;
+let pts = [];                                   // [t, corrected, indicator]
+let winS = store.get('winS', 10);
+
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pad2 = (n) => String(n).padStart(2, '0');
+const clockOf = (iso) => (iso || '').slice(11, 19);
+function fmtDur(s) {
+  s = Number(s);
+  if (!Number.isFinite(s)) return '—';
+  const m = Math.floor(s / 60);
+  return m ? `${m} min ${Math.round(s - m * 60)} s` : `${s.toFixed(1)} s`;
+}
+function fmtClock(s) { const m = Math.floor(s / 60); return `${pad2(m)}:${(s - m * 60).toFixed(1).padStart(4, '0')}`; }
+function fmtNum(v, dec) {
+  if (dec === undefined) dec = Math.abs(v) >= 100 ? 0 : Math.abs(v) >= 1 ? 1 : 2;
+  return Number(v).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+}
+
+async function post(path, body) {
+  const r = await fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body || {}) });
+  let j = {};
+  try { j = await r.json(); } catch (e) {}
+  if (!r.ok || j.ok === false) throw new Error(j.error || `HTTP ${r.status}`);
+  return j.result;
+}
+async function act(path, body) {               // post + show errors; null on failure
+  try { return await post(path, body); } catch (e) { toast(e.message, 'err'); return null; }
+}
+function toast(msg, kind) {
+  const el = document.createElement('div');
+  el.className = 'toast ' + (kind || '');
+  el.textContent = msg;
+  $('toasts').appendChild(el);
+  setTimeout(() => el.classList.add('hide'), 4000);
+  setTimeout(() => el.remove(), 4500);
+}
+
+// ---------------------------------------------------------------- polling
+async function poll() {
+  let ok = false;
+  try {
+    const r = await fetch(`/api/state?since=${lastSeq}&saved=${savedN}`, { cache: 'no-store' });
+    const s = await r.json();
+    if (s.sid !== sid) {                        // first contact, or the app was restarted
+      const restarted = sid !== null;
+      sid = s.sid; pts = []; connId = null; savedN = -1; filled = false;
+      if (restarted) { lastSeq = -1; setTimeout(poll, 0); return; }
+    }
+    if (s.conn_id !== connId) { connId = s.conn_id; pts = []; }
+    for (const p of s.points) pts.push([p[1], p[2], p[3]]);
+    if (s.points.length) lastSeq = s.points[s.points.length - 1][0];
+    if (pts.length) {
+      const cut = pts[pts.length - 1][0] - KEEP_S;
+      let i = 0;
+      while (i < pts.length && pts[i][0] < cut) i++;
+      if (i) pts.splice(0, i);
+    }
+    if (s.saved) {
+      if (savedN >= 0 && s.saved_n > savedN && s.saved.length) {
+        const r0 = s.saved[s.saved.length - 1];
+        const ttl = r0.ttl_pulses === null || r0.ttl_pulses === '' ? '' : `, ${r0.ttl_pulses} TTL pulses`;
+        toast(`Saved ${r0.mouse} S${pad2(r0.session)} — ${fmtDur(r0.duration_s)}${ttl}`, 'ok');
+      }
+      renderSessions(s.saved);
+    }
+    savedN = s.saved_n;
+    st = s;
+    render();
+    ok = true;
+  } catch (e) { /* app not reachable */ }
+  setOffline(!ok);
+  setTimeout(poll, ok ? 100 : 1000);
+}
+
+function setOffline(off) {
+  $('offline').classList.toggle('show', off || quitting);
+  if (quitting) {
+    $('offTitle').textContent = 'Pressure logger closed';
+    $('offText').textContent = 'Any recording was saved. You can close this window.';
+  }
+}
+
+// ---------------------------------------------------------------- rendering
+function render() {
+  const s = st, status = s.status || '';
+  const connected = status === 'connected';
+  let cls = 'off', label = 'Disconnected';
+  if (connected) { cls = 'on'; label = s.simulate ? 'Connected (simulated)' : 'Connected'; }
+  else if (status === 'connecting') { cls = 'busy'; label = 'Connecting…'; }
+  else if (status.startsWith('error')) { cls = 'err'; label = 'Not connected'; }
+  $('conn').className = 'pill ' + cls;
+  $('conn').textContent = label;
+  $('connInfo').textContent = connected
+    ? `${s.port} · ${s.rate.toFixed(1)} Hz · ` + (s.has_ttl ? `TTL pulses ${s.pulses}` : 'TTL not reported by the Arduino sketch')
+    : (status === 'connecting' || status === 'disconnected' ? '' : status);
+  $('connBtn').textContent = connected ? 'Disconnect' : 'Connect';
+  $('connBtn').disabled = status === 'connecting';
+
+  if (!filled) {                                // fill the inputs once from the app
+    $('folder').value = s.folder; $('mouse').value = s.mouse; $('details').value = s.details;
+    $('autoTtl').checked = s.auto_ttl;
+    filled = true;
+  }
+  for (const k of ['lo', 'hi']) {
+    if (document.activeElement !== $(k) && Number($(k).value) !== s[k]) $(k).value = s[k];
+  }
+
+  const rec = s.rec;
+  $('folder').disabled = $('mouse').disabled = !!rec;
+  $('mouse').classList.toggle('warn', !s.mouse && !rec);
+  $('recCard').classList.toggle('recording', !!rec);
+  if (rec) {
+    $('recTitle').innerHTML = `<span class="dot"></span>REC&nbsp; ${esc(rec.label)}`;
+    $('recSub').textContent = `${fmtClock(rec.elapsed)} · ${rec.pulses} TTL pulses · ${rec.trigger === 'ttl' ? 'started by TTL' : 'started with the button'}`;
+    $('recFile').textContent = rec.file;
+    $('recBtn').textContent = 'Stop recording';
+    $('detailsNote').textContent = `saved with ${rec.label} when it ends`;
+  } else {
+    let msg = 'Not connected', sub = 'Connect the Arduino to record.';
+    if (connected && !s.calibrated) { msg = 'Setting baseline…'; sub = 'Keep the sensor untouched for a second.'; }
+    else if (connected && s.auto_ttl && s.has_ttl) { msg = 'Waiting for TTL…'; sub = 'Recording starts at the first TTL pulse.'; }
+    else if (connected) { msg = 'Ready'; sub = s.has_ttl ? 'Press Start to record.' : 'No TTL from the Arduino — press Start to record.'; }
+    if (connected && !s.mouse) sub = 'Enter a mouse ID before recording.';
+    $('recTitle').textContent = msg;
+    $('recSub').textContent = sub;
+    $('recFile').textContent = '';
+    $('recBtn').textContent = 'Start recording';
+    $('detailsNote').textContent = 'saved with the session when it ends';
+  }
+  $('recBtn').disabled = !connected;
+  const root = (s.data_dir || 'data').split(/[\\/]/).pop();
+  $('next').textContent = `${root}/${s.next}`;
+  $('next').title = s.data_dir;
+  $('plotInfo').textContent = s.calibrated ? `baseline ${fmtNum(s.baseline)}` : '';
+  draw();
+}
+
+function renderSessions(rows) {
+  const list = rows.slice().reverse();
+  $('sessRows').innerHTML = list.map((r) => `<tr>
+    <td>${esc(clockOf(r.end_time))}</td><td>${esc(r.folder || '—')}</td><td>${esc(r.mouse)}</td>
+    <td>S${esc(pad2(r.session))}</td><td>${r.trigger === 'ttl' ? 'TTL' : 'button'}</td><td>${esc(fmtDur(r.duration_s))}</td>
+    <td>${r.ttl_pulses === null || r.ttl_pulses === '' ? '—' : esc(r.ttl_pulses)}</td>
+    <td class="details">${esc(r.details || '')}</td></tr>`).join('');
+  $('noSess').style.display = list.length ? 'none' : '';
+}
+
+// ---------------------------------------------------------------- plot
+function niceTicks(lo, hi, n) {
+  const span = hi - lo;
+  if (!(span > 0)) return { ticks: [lo], dec: 0 };
+  const raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / mag;
+  const step = (f >= 7.5 ? 10 : f >= 3.5 ? 5 : f >= 1.5 ? 2 : 1) * mag;
+  const ticks = [];
+  for (let v = Math.ceil(lo / step) * step; v <= hi + step * 1e-9; v += step) ticks.push(v);
+  return { ticks, dec: Math.max(0, -Math.floor(Math.log10(step) + 1e-9)) };
+}
+
+function draw() {
+  const c = $('plot'), ctx = c.getContext('2d');
+  const dpr = window.devicePixelRatio || 1, W = c.clientWidth, H = c.clientHeight;
+  if (!W || !H) return;
+  if (c.width !== Math.round(W * dpr) || c.height !== Math.round(H * dpr)) {
+    c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+  }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  const css = getComputedStyle(document.documentElement), col = (n) => css.getPropertyValue(n).trim();
+  const L = 76, R = 12, T = 12, B = 34, pw = W - L - R, ph = H - T - B;
+  if (pw < 20 || ph < 20) return;
+
+  const tEnd = pts.length ? pts[pts.length - 1][0] : 0;
+  const x0 = Math.max(0, tEnd - winS), x1 = Math.max(tEnd, winS);
+  let i0 = 0, lo = Infinity, hi = -Infinity;
+  { let a = 0, b = pts.length; while (a < b) { const m = (a + b) >> 1; if (pts[m][0] < x0) a = m + 1; else b = m; } i0 = a; }
+  for (let i = i0; i < pts.length; i++) { const v = pts[i][1]; if (v < lo) lo = v; if (v > hi) hi = v; }
+  const thr = st ? [['Lower', st.lo], ['Upper', st.hi]] : [];
+  if (!Number.isFinite(lo) || $('fitThr').checked) for (const [, v] of thr) { lo = Math.min(lo, v); hi = Math.max(hi, v); }
+  if (!Number.isFinite(lo)) { lo = -1; hi = 1; }
+  const pad = (hi - lo) * 0.1 + 1;
+  lo -= pad; hi += pad;
+  const X = (t) => L + (t - x0) / (x1 - x0) * pw, Y = (v) => T + (hi - v) / (hi - lo) * ph;
+
+  ctx.save();
+  ctx.beginPath(); ctx.rect(L, T, pw, ph); ctx.clip();
+  ctx.fillStyle = col('--shade');                 // indicator = 1
+  let s0 = null;
+  for (let i = i0; i < pts.length; i++) {
+    const on = pts[i][2] === 1, last = i === pts.length - 1;
+    if (on && s0 === null) s0 = pts[i][0];
+    if (s0 !== null && (!on || last)) { ctx.fillRect(X(s0), T, X(pts[i][0]) - X(s0), ph); s0 = null; }
+  }
+  ctx.restore();
+
+  ctx.lineWidth = 1; ctx.strokeStyle = col('--grid'); ctx.fillStyle = col('--muted');
+  ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
+  const yt = niceTicks(lo, hi, 6);
+  ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (const v of yt.ticks) {
+    const y = Math.round(Y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+    ctx.fillText(fmtNum(v, yt.dec), L - 8, y);
+  }
+  const xt = niceTicks(x0, x1, Math.max(2, Math.floor(pw / 90)));
+  ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+  for (const t of xt.ticks) {
+    const x = Math.round(X(t)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(x, T); ctx.lineTo(x, T + ph); ctx.stroke();
+    ctx.fillText(fmtNum(t, xt.dec), x, T + ph + 6);
+  }
+  ctx.fillText('time (s)', L + pw / 2, T + ph + 20);
+  ctx.save();
+  ctx.translate(12, T + ph / 2); ctx.rotate(-Math.PI / 2); ctx.textBaseline = 'middle';
+  ctx.fillText('reading − baseline', 0, 0);
+  ctx.restore();
+
+  ctx.strokeStyle = col('--thr'); ctx.fillStyle = col('--thr'); ctx.setLineDash([2, 3]);
+  ctx.textAlign = 'right';
+  for (const [name, v] of thr) {                  // Schmitt thresholds
+    const text = `${name} ${fmtNum(v)}`;
+    if (v > hi || v < lo) {                       // off screen: mark the edge (left side)
+      ctx.textAlign = 'left';
+      ctx.textBaseline = v > hi ? 'top' : 'bottom';
+      ctx.fillText(`${text} ${v > hi ? '↑' : '↓'}`, L + 6, v > hi ? T + 3 : T + ph - 3);
+      ctx.textAlign = 'right';
+      continue;
+    }
+    const y = Math.round(Y(v)) + 0.5;
+    ctx.beginPath(); ctx.moveTo(L, y); ctx.lineTo(L + pw, y); ctx.stroke();
+    ctx.textBaseline = name === 'Upper' ? 'bottom' : 'top';
+    ctx.fillText(text, L + pw - 4, name === 'Upper' ? y - 2 : y + 2);
+  }
+  ctx.setLineDash([]);
+
+  if (pts.length - i0 >= 2) {
+    ctx.save();
+    ctx.beginPath(); ctx.rect(L, T, pw, ph); ctx.clip();
+    ctx.strokeStyle = col('--line'); ctx.lineWidth = 1.25; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(X(pts[i0][0]), Y(pts[i0][1]));
+    for (let i = i0 + 1; i < pts.length; i++) ctx.lineTo(X(pts[i][0]), Y(pts[i][1]));
+    ctx.stroke();
+    ctx.restore();
+  } else {
+    ctx.fillStyle = col('--muted'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif';
+    ctx.fillText(st && st.status === 'connected' ? 'Waiting for data…' : 'Not connected', L + pw / 2, T + ph / 2);
+  }
+  ctx.strokeStyle = col('--border'); ctx.lineWidth = 1;
+  ctx.strokeRect(L + 0.5, T + 0.5, pw - 1, ph - 1);
+}
+
+// ---------------------------------------------------------------- inputs
+function debounce(fn, ms) { let h; return () => { clearTimeout(h); h = setTimeout(fn, ms); }; }
+for (const k of ['folder', 'mouse', 'details']) {
+  const send = () => act('/api/meta', { [k]: $(k).value });
+  $(k).addEventListener('input', debounce(send, 350));
+  $(k).addEventListener('change', send);
+}
+for (const k of ['lo', 'hi']) {
+  $(k).addEventListener('change', () => {
+    const v = Number($(k).value);
+    if ($(k).value.trim() === '' || !Number.isFinite(v)) {
+      toast('Enter a number', 'err');
+      if (st) $(k).value = st[k];
+      return;
+    }
+    act('/api/settings', { [k]: v });
+  });
+  $(k).addEventListener('keydown', (e) => { if (e.key === 'Enter') e.target.blur(); });
+}
+$('win').value = winS;
+$('win').addEventListener('change', () => {
+  let v = Number($('win').value);
+  if (!Number.isFinite(v) || v <= 0) v = winS;
+  winS = Math.min(Math.max(v, 1), KEEP_S);
+  $('win').value = winS;
+  store.set('winS', winS);
+  draw();
+});
+$('win').addEventListener('keydown', (e) => { if (e.key === 'Enter') e.target.blur(); });
+$('fitThr').checked = store.get('fitThr', false);
+$('fitThr').addEventListener('change', () => { store.set('fitThr', $('fitThr').checked); draw(); });
+$('autoTtl').addEventListener('change', () => act('/api/settings', { auto_ttl: $('autoTtl').checked }));
+$('baseline').addEventListener('click', async () => {
+  const b = await act('/api/baseline');
+  if (b !== null) toast(`Baseline set to ${fmtNum(b)}`, 'ok');
+});
+$('recBtn').addEventListener('click', () => {
+  if (!st) return;
+  if (!st.rec && !$('mouse').value.trim()) { toast('Enter a mouse ID first', 'err'); $('mouse').focus(); return; }
+  act('/api/record', { action: st.rec ? 'stop' : 'start' });
+});
+$('openFolder').addEventListener('click', () => act('/api/open_folder'));
+$('connBtn').addEventListener('click', () => {
+  if (!st) return;
+  if (st.status === 'connected') {
+    if (st.rec && !confirm('A recording is running. Disconnect and save it?')) return;
+    act('/api/disconnect');
+  } else {
+    act('/api/connect', { port: $('port').value });
+  }
+});
+$('refresh').addEventListener('click', loadPorts);
+$('quit').addEventListener('click', async () => {
+  if (!confirm(st && st.rec ? 'A recording is running. Save it and quit?' : 'Quit the pressure logger?')) return;
+  if (await act('/api/quit') !== null) { quitting = true; setOffline(true); }
+});
+
+async function loadPorts() {
+  try {
+    const list = await (await fetch('/api/ports', { cache: 'no-store' })).json();
+    const sel = $('port'), cur = sel.value;
+    sel.innerHTML = '<option value="">Auto-detect</option>' + list.map((p) =>
+      `<option value="${esc(p.device)}">${esc(p.device)}${p.description && p.description !== 'n/a' ? ' — ' + esc(p.description) : ''}</option>`).join('');
+    sel.value = list.some((p) => p.device === cur) ? cur : '';
+  } catch (e) {}
+}
+
+new ResizeObserver(() => draw()).observe($('plot'));
+loadPorts();
+poll();
+</script>
+</body>
+</html>

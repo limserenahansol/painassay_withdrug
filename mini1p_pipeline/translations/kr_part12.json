@@ -1,0 +1,16 @@
+{
+ "Left: Wilcoxon signed-rank of z[{0},{1}]-z[{2},{3}] (stimuli) / z[{4},{5}]-z[{6},{7}] (behaviours) over trials, BH q <= {8}.": "왼쪽: 시행에 대한 z[{0},{1}]-z[{2},{3}] (자극) / z[{4},{5}]-z[{6},{7}] (행동)의 Wilcoxon signed-rank, BH q <= {8}.",
+ "Wilcoxon signed-rank over neurons of the best-window (stimuli {0}-{1} s, behaviours {2}-{3} s) response, injection vs baseline.": "최적 창 (자극 {0}-{1} s, 행동 {2}-{3} s) 반응에 대한 뉴런 Wilcoxon signed-rank, 주사 후 vs 기준.",
+ "Result (p < {0}), mean response decreased: {1} pin prick;": "결과 (p < {0}), 평균 반응 감소: {1} pin prick;",
+ "increased: {0} escape/rearing onset.": "증가: {0} escape/rearing onset.",
+ "Trial-mean z (per-session MAD) minus the pre window (stimuli {0}-{1} s, behaviours {2}-{3} s);": "시행 평균 z (세션별 MAD) - 직전 창 (자극 {0}-{1} s, 행동 {2}-{3} s);",
+ "Result (largest baseline response passing the time-shift test): {0} #22 escape/rearing onset {1} z, {2} #81 escape/rearing onset {3} z, {4} #13 heat {5} z, {6} #52 pin prick {7} z.": "결과 (시간 이동 검정을 통과한 가장 큰 기준 반응): {0} #22 escape/rearing onset {1} z, {2} #81 escape/rearing onset {3} z, {4} #13 heat {5} z, {6} #52 pin prick {7} z.",
+ "How to read: area under the mean response before (the pre window (stimuli {0}-{1} s, behaviours {2}-{3} s)) and after (best-window (stimuli {4}-{5} s, behaviours {6}-{7} s)) each event;": "읽는 법: 각 사건 전 (직전 창: 자극 {0}-{1} s, 행동 {2}-{3} s)과 후 (최적 창: 자극 {4}-{5} s, 행동 {6}-{7} s) 평균 반응의 면적;",
+ "Largest mean responses of the UP neurons: mild touch (baseline, {0} z), pin prick (after injection, {1} z).": "UP 뉴런의 가장 큰 평균 반응: mild touch (기준, {0} z), pin prick (주사 후, {1} z).",
+ "Population response beyond chance (q <= {0}) at baseline: mild touch, pin prick, withdrawal, flinch;": "기준 세션에서 우연 수준을 넘은 집단 반응 (q <= {0}): mild touch, pin prick, withdrawal, flinch;",
+ "after the injection: light touch, mild touch, pin prick, heat, withdrawal, flinch, movement onset.": "주사 후: light touch, mild touch, pin prick, heat, withdrawal, flinch, movement onset.",
+ "Largest mean responses of the UP neurons: movement onset (baseline, {0} z), movement onset (after injection, {1} z).": "UP 뉴런의 가장 큰 평균 반응: movement onset (기준, {0} z), movement onset (주사 후, {1} z).",
+ "Largest mean responses of the UP neurons: heat (baseline, {0} z), pin prick (after injection, {1} z).": "UP 뉴런의 가장 큰 평균 반응: heat (기준, {0} z), pin prick (주사 후, {1} z).",
+ "after the injection: pin prick, heat, withdrawal, flinch, movement onset.": "주사 후: pin prick, heat, withdrawal, flinch, movement onset.",
+ "Largest mean responses of the UP neurons: movement onset (after injection, {0} z), mild touch (baseline, {1} z).": "UP 뉴런의 가장 큰 평균 반응: movement onset (주사 후, {0} z), mild touch (기준, {1} z)."
+}

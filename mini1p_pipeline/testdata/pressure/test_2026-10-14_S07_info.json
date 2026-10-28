@@ -1,0 +1,33 @@
+{
+  "folder": "111",
+  "mouse": "test",
+  "date": "2026-10-14",
+  "session": 7,
+  "trigger": "ttl",
+  "start_time": "2026-10-14T13:36:37.809",
+  "end_time": "2026-10-14T13:36:53.956",
+  "duration_s": 16.146,
+  "n_samples": 1291,
+  "rate_hz": 79.9,
+  "ttl_pulses": 426,
+  "details": "",
+  "file": "111/test/2026-10-14/test_2026-10-14_S07_pressure.csv",
+  "baseline_at_start": -20332.83,
+  "schmitt_lower": 100000.0,
+  "schmitt_upper": 200000.0,
+  "ttl_input": true,
+  "port": "/dev/cu.usbmodem21101",
+  "ttl_mode": "pulses",
+  "ttl_timeout_s": 2.0,
+  "columns": {
+    "t_s": "seconds since the first sample of the session",
+    "arduino_ms": "Arduino clock at the sample (ms since reset)",
+    "pc_time": "computer clock when the sample arrived",
+    "raw": "NAU7802 raw count (channel 1, gain 128, 80 samples/s)",
+    "baseline": "baseline subtracted from raw",
+    "corrected": "raw - baseline",
+    "indicator": "Schmitt trigger: 1 from corrected >= upper until corrected <= lower",
+    "ttl": "TTL input level at the sample",
+    "ttl_count": "TTL pulses since the session started (= camera frame number, 1 pulse/frame)"
+  }
+}

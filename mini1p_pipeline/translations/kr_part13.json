@@ -1,0 +1,16 @@
+{
+ "Result (p < {0}), mean response decreased: none;": "결과 (p < {0}), 평균 반응 감소: 없음;",
+ "increased: {0} pin prick, {1} movement onset, {2} heat, {3} withdrawal.": "증가: {0} pin prick, {1} movement onset, {2} heat, {3} withdrawal.",
+ "Result (largest baseline response passing the time-shift test): {0} #109 escape/rearing onset {1} z, {2} #10 heat {3} z, {4} #92 pin prick {5} z, {6} #94 escape/rearing onset {7} z.": "결과 (시간 이동 검정을 통과한 가장 큰 기준 반응): {0} #109 escape/rearing onset {1} z, {2} #10 heat {3} z, {4} #92 pin prick {5} z, {6} #94 escape/rearing onset {7} z.",
+ "Result (median latency of the UP neurons): heat {0} s, light touch {1} s, mild touch {2} s, pin prick {3} s, flinch {4} s, movement onset {5} s, withdrawal {6} s.": "결과 (UP 뉴런의 잠복기 중앙값): heat {0} s, light touch {1} s, mild touch {2} s, pin prick {3} s, flinch {4} s, movement onset {5} s, withdrawal {6} s.",
+ "Largest mean responses of the UP neurons: movement onset (baseline, {0} z), mild touch (after injection, {1} z).": "UP 뉴런의 가장 큰 평균 반응: movement onset (기준, {0} z), mild touch (주사 후, {1} z).",
+ "Population response beyond chance (q <= {0}) at baseline: pin prick, heat, withdrawal, flinch, movement onset;": "기준 세션에서 우연 수준을 넘은 집단 반응 (q <= {0}): pin prick, heat, withdrawal, flinch, movement onset;",
+ "after the injection: mild touch, pin prick, withdrawal, flinch, movement onset.": "주사 후: mild touch, pin prick, withdrawal, flinch, movement onset.",
+ "Largest mean responses of the UP neurons: heat (baseline, {0} z), mild touch (baseline, {1} z).": "UP 뉴런의 가장 큰 평균 반응: heat (기준, {0} z), mild touch (기준, {1} z).",
+ "Population response beyond chance (q <= {0}) at baseline: mild touch, pin prick, movement onset;": "기준 세션에서 우연 수준을 넘은 집단 반응 (q <= {0}): mild touch, pin prick, movement onset;",
+ "after the injection: light touch, pin prick, heat, withdrawal, movement onset.": "주사 후: light touch, pin prick, heat, withdrawal, movement onset.",
+ "Largest mean responses of the UP neurons: heat (baseline, {0} z), light touch (baseline, {1} z).": "UP 뉴런의 가장 큰 평균 반응: heat (기준, {0} z), light touch (기준, {1} z).",
+ "Population response beyond chance (q <= {0}) at baseline: light touch, mild touch, pin prick, withdrawal;": "기준 세션에서 우연 수준을 넘은 집단 반응 (q <= {0}): light touch, mild touch, pin prick, withdrawal;",
+ "Largest mean responses of the UP neurons: heat (baseline, {0} z), movement onset (baseline, {1} z).": "UP 뉴런의 가장 큰 평균 반응: heat (기준, {0} z), movement onset (기준, {1} z).",
+ "after the injection: pin prick, heat.": "주사 후: pin prick, heat."
+}

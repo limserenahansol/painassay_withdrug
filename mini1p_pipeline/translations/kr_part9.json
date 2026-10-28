@@ -1,0 +1,23 @@
+{
+"How to read: A = one line per mouse from its vehicle-day change to its SBI-553-day change;": "읽는 법: A = 마우스당 선 하나, vehicle 날의 변화에서 SBI-553 날의 변화로;",
+"B = per event and mouse, how much the SBI-553 day differed from the vehicle day ({0} = the same).": "B = 사건·마우스별로 SBI-553 날이 vehicle 날과 얼마나 달랐는지 ({0} = 같음).",
+"Within-day change = injection session minus the same day's baseline session, per tracked neuron.": "같은 날 변화 = 추적한 뉴런마다 주사 후 세션 − 같은 날 기준 세션.",
+"Test per mouse: Wilcoxon signed-rank over tracked neurons, SBI-553-day change vs vehicle-day change;": "마우스별 검정: 추적한 뉴런에 대한 Wilcoxon signed-rank, SBI-553 날 변화 vs vehicle 날 변화;",
+"* p < {0} (uncorrected).": "* p < {0} (보정 없음).",
+"n = {0} mice: no test across mice is shown (minimum possible p = {1}).": "n = {0}마리: 마우스 간 검정은 표시하지 않음 (가능한 최소 p = {1}).",
+"The SBI-553-day change of the transient rate was below the vehicle-day change in {0}/{1} mice ({2}: Day-2 median {3} transients/min, floor).": "transient 빈도의 SBI-553 날 변화가 vehicle 날 변화보다 낮았던 마우스: {0}/{1} ({2}: Day 2 중앙값 {3} transient/분, 바닥 효과).",
+"Event responses with p < {0}: {1} heat, {2} escape/rearing onset, {3} mild touch, {4} withdrawal, {5} heat.": "p < {0}인 사건 반응: {1} heat, {2} escape/rearing onset, {3} mild touch, {4} withdrawal, {5} heat.",
+"Tracked neurons: event responses in three conditions ({0}, {1})": "추적한 뉴런: 세 조건의 사건 반응 ({0}, {1})",
+"How to read: one row per mouse, one panel per event;": "읽는 법: 마우스당 한 줄, 사건당 한 칸;",
+"grey line = one tracked neuron across baseline (mean of the {0} days), vehicle and SBI-553;": "회색 선 = 추적한 뉴런 하나의 기준({0}일 평균), vehicle, SBI-553 값;",
+"bar = median.": "막대 = 중앙값.",
+"Response = z [{0}, {1}] s minus [{2}, {3}] s around the event, per tracked neuron.": "반응 = 추적한 뉴런마다 사건 주변 z [{0}, {1}] s − [{2}, {3}] s.",
+"Per panel: Friedman over the {0} conditions (F p) and Wilcoxon signed-rank SBI-553 vs vehicle over tracked neurons;": "칸마다: {0}개 조건에 대한 Friedman (F p)과 추적한 뉴런에 대한 Wilcoxon signed-rank SBI-553 vs vehicle;",
+"uncorrected.": "보정 없음.",
+"SBI-553 vs vehicle differed (p < {0}) for: {1} heat, {2} withdrawal, {3} flinch, {4} escape/rearing onset.": "SBI-553과 vehicle이 다른 항목 (p < {0}): {1} heat, {2} withdrawal, {3} flinch, {4} escape/rearing onset.",
+"SBI-553 vs vehicle differed (p < {0}) for: none.": "SBI-553과 vehicle이 다른 항목 (p < {0}): 없음.",
+"Mean over the tracked neurons of each mouse;": "마우스별 추적한 뉴런의 평균;",
+"n = tracked neurons ({0} {1}, {2} {3}, {4} {5}, {6} {7}).": "n = 추적한 뉴런 수 ({0} {1}, {2} {3}, {4} {5}, {6} {7}).",
+"The tests are on the previous two slides;": "검정은 앞의 두 슬라이드에 있음;",
+"this view shows the time course.": "이 그림은 시간 경과를 보여 줌."
+}

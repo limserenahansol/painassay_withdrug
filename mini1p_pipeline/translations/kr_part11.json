@@ -1,0 +1,4 @@
+{
+ "bracket with * = that mouse's baseline vs injection bars (paired Wilcoxon p < {0}).": "* 괄호 = 그 마우스의 기준 vs 주사 막대 (짝 Wilcoxon p < {0}).",
+ "bottom = the response in [{0}, {1}] s per session (star over 'vs {2}' = that bar differs from {3}) and the paired comparison of the two sessions (title: base vs inj.).": "아래 = 세션별 [{0}, {1}] s 반응 ('vs {2}' 위 별 = 그 막대가 {3}과 다름)과 두 세션의 짝 비교 (제목: base vs inj.)."
+}

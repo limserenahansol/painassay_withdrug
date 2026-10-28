@@ -1,0 +1,21 @@
+out/
+__pycache__/
+*.h5
+*.isxd
+*.tif
+# 10-28: code only on GitHub (no recordings, outputs, logs, backups or rig data)
+*.pyc
+*.bak
+*.bak*
+*.log
+*.mat
+*.avi
+*.mp4
+*.gpio
+*.png
+*.pptx
+.DS_Store
+_backup_decks_*/
+vendor/pressure_logger/data/
+*.csv
+!testdata/**/*.csv
